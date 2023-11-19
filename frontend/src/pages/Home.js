@@ -1,18 +1,15 @@
-import Header from '../components/Header'
 import "../index.css"
 import { Link } from 'react-router-dom';
-import { Grid} from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 
 export default function Home() {
 
     return (
-        <Grid>
-            <h1>BruinChomp</h1>
-            <nav>
-                <Link to="/home">Home</Link>
-                <Link to="/about">About</Link>
-                <Link to="/posts">Posts</Link>
-            </nav>
-        </Grid>
+        <Stack spacing={5} sx= {{ border: 1, width: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
+            <Typography>this line is a test </Typography>
+            <Typography>test #2</Typography>
+            <Typography>another test line</Typography>
+            <Typography>yay</Typography>
+        </Stack>
     )
 }

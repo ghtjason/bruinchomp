@@ -1,14 +1,31 @@
 import React from 'react'
-import { Drawer, List, ListItem, ListItemText, Grid } from '@mui/material';
-import { mainNavbarItems } from './navbarItems';
+import { Drawer, List, ListItem, ListItemText, Grid, Stack } from '@mui/material';
 import { navbarStyles } from './styles';
 import { useNavigate, Outlet } from "react-router-dom";
+
+const mainNavbarItems = [
+    {
+        id: 0,
+        label: 'Home',
+        route: 'home',
+    },
+    {
+        id: 1,
+        label: 'About',
+        route: 'about',
+    },
+    {
+        id: 2,
+        label: 'Posts',
+        route: 'posts',
+    },
+  ]
 
 const Navbar = () => {
     const navigate = useNavigate();
 
     return (
-        <Grid container>
+        <Stack direction="row">
             <Drawer
             sx={navbarStyles.drawer}
             variant="permanent"
@@ -30,7 +47,7 @@ const Navbar = () => {
                 </List>
             </Drawer>
             <Outlet />
-        </Grid>
+        </Stack>
     );
 };
 

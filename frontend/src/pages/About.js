@@ -1,12 +1,10 @@
-import { Typography, Grid } from '@mui/material'
-import Header from '../components/Header'
+import { Typography, Grid, Stack } from '@mui/material'
 
 export default function About() {
 
     return (
-        <Grid>
-            <Header/>
+        <Stack>
             <h2>About Page</h2>
-        </Grid>
+        </Stack>
     )
 }

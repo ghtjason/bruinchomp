@@ -1,11 +1,9 @@
-import { Grid } from '@mui/material'
-import Header from '../components/Header'
+import { Grid, Stack } from '@mui/material'
 
 export default function Posts() {
     return (
-        <Grid>
-            <Header />
+        <Stack>
             <h2>Posts</h2>
-        </Grid>
+        </Stack>
     )
 }
