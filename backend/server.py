@@ -1,12 +1,33 @@
 import os
+import cloudinary.uploader
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app  # Initialize Flask App
+from dotenv import load_dotenv
+
+load_dotenv()
+cloudinary.config(
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET')
+)
 
 app = Flask(__name__)  # Initialize Firestore DB
 cred = credentials.Certificate('key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
 posts_ref = db.collection('posts')
+
+
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    try:
+        image_to_upload = request.files['file']
+        if not image_to_upload:
+            raise Exception("no file provided")
+        upload_result = cloudinary.uploader.upload(image_to_upload, allowed_formats=['png', 'jpg', 'jpeg'])
+        return jsonify(upload_result)
+    except Exception as e:
+        return f"error: {e}"
 
 
 @app.route('/list', methods=['GET'])
@@ -27,10 +48,10 @@ def create():
         create() : Add document to Firestore collection with request body
         Ensure you pass a custom ID as part of json body in post request
         e.g. {
-    "date": "Wed, 01 Nov 2023 02:11:31 GMT",
     "description": "testid",
     "image": "nope.lol",
     "title": "newthingy",
+    "hall": "bplate"
     "user": "me"
 }
     """
@@ -38,6 +59,7 @@ def create():
         doc_ref = posts_ref.document()
         doc_ref.set(request.json)
         doc_ref.update({"id": doc_ref.id})  # set id field to auto-generated firebase id
+        doc_ref.update({"date": firestore.firestore.SERVER_TIMESTAMP})
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"error: {e}"
@@ -45,8 +67,6 @@ def create():
 
 @app.route('/delete', methods=['DELETE'])
 def delete():
-    """
-        delete() : Delete a document from Firestore collection    """
     try:
         doc_id = request.json["id"]
         posts_ref.document(doc_id).delete()
