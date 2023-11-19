@@ -1,1 +1,4 @@
 .DS_Store
+key.json
+__pycache__/
+.idea/
