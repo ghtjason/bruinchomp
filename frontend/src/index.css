@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.post-preview {
+  padding: 10px 16x;
+  margin: 20px 0;
+  border-bottom: 1px solid #fafafa;
+  border: 2px solid #000; /* 2px width solid black border */
+  padding: 10px; /* Optional: Add padding to give some space inside the border */
+}
+
+.post-preview:hover {
+  box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
+}
+
+.post-preview h2 {
+  font-size: 20px;
+  color: rgb(7, 109, 192);
+  margin-bottom: 8px;
+}
