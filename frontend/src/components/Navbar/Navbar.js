@@ -19,6 +19,13 @@ const mainNavbarItems = [
         label: 'Posts',
         route: 'posts',
     },
+
+    {
+        id: 3,
+        label: 'Create',
+        route: 'create',
+    },
+
   ]
 
 const Navbar = () => {
