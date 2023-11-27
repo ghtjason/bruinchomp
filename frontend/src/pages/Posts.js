@@ -7,13 +7,14 @@ import { useState } from "react";
     //Can maybe try to search by post?
     const [posts, setPosts] = useState(
         [
-            {title: 'Bruin Plate', Post_category: 'Bruin_Plate', Post_body: 'lorem iosum', Post_image: 'https://bruinplate.hh.ucla.edu/img/Home_Slide_MOC.jpg', author: 'Bob', id: 1},
-            {title: 'Epicuria', Post_category: 'Epicuria', Post_body: 'lorem iosum', Post_image: 'https://portal.housing.ucla.edu/sites/default/files/media/images/DiningWebsite_HeaderImages_EpicuriaAckerman2.png', author: 'John', id: 2},
-            {title: 'De Neve', Post_category: 'De_Neve', Post_body: 'lorem iosum', Post_image: 'https://portal.housing.ucla.edu/sites/default/files/media/images/DiningWebsite_HeaderImages_DeNeve.png', author: 'Smith', id: 3}    
+            {title: 'Bruin Plate', category: 'Bruin_Plate', body: 'lorem iosum', Post_image: 'https://bruinplate.hh.ucla.edu/img/Home_Slide_MOC.jpg', author: 'Bob', id: 1},
+            {title: 'Epicuria', category: 'Epicuria', body: 'lorem iosum', Post_image: 'https://portal.housing.ucla.edu/sites/default/files/media/images/DiningWebsite_HeaderImages_EpicuriaAckerman2.png', author: 'John', id: 2},
+            {title: 'De Neve', category: 'De_Neve', body: 'lorem iosum', Post_image: 'https://portal.housing.ucla.edu/sites/default/files/media/images/DiningWebsite_HeaderImages_DeNeve.png', author: 'Smith', id: 3}    
         ]
     )
     return (
         <Stack>
+        
         <div className="Posts">
             {posts.map((post) => (
                 <div className="post-preview" key={posts.id}>
@@ -26,6 +27,7 @@ import { useState } from "react";
                     />
                     </div>
                     <p>{post.author}</p>
+                    <p>{post.body}</p>
                     <div className="buttons">
 
                         <Button variant="outlined">Comment</Button>
