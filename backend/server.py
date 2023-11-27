@@ -18,7 +18,7 @@ db = firestore.client()
 posts_ref = db.collection('posts')
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/image', methods=['POST'])
 def upload_image():
     try:
         image_to_upload = request.files['file']
@@ -30,7 +30,7 @@ def upload_image():
         return f"error: {e}"
 
 
-@app.route('/list', methods=['GET'])
+@app.route('/posts', methods=['GET'])
 def read():
     """
         read() : Fetches documents from Firestore collection as JSON
@@ -42,14 +42,15 @@ def read():
         return f"error: {e}"
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/posts', methods=['POST'])
 def create():
     """
         create() : Add document to Firestore collection with request body
         Ensure you pass a custom ID as part of json body in post request
         e.g. {
     "description": "testid",
-    "image": "nope.lol",
+    "image_url": "nope.lol",
+    "image_public_id": "nope.lol",
     "title": "newthingy",
     "hall": "bplate"
     "user": "me"
@@ -65,11 +66,14 @@ def create():
         return f"error: {e}"
 
 
-@app.route('/delete', methods=['DELETE'])
+@app.route('/posts', methods=['DELETE'])
 def delete():
     try:
         doc_id = request.json["id"]
-        posts_ref.document(doc_id).delete()
+        document = posts_ref.document(doc_id)
+        image_public_id = document.get().get('image_public_id')
+        cloudinary.uploader.destroy(image_public_id)    # delete image inside cloudinary
+        document.delete()   # deletes post inside firebase
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"error: {e}"
