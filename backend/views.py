@@ -3,6 +3,11 @@ from models import *
 from schemas import *
 from app import *
 import cloudinary.uploader
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_bcrypt import Bcrypt
+
 
 post_schema = PostSchema()
 posts_schema = PostSchema(many=True)
@@ -63,6 +68,8 @@ def upload_image():
 def list_comments(post_id):
     try:
         post = Post.query.get(post_id)
+        if post is None:
+            raise Exception(f'No post found with id \'{post_id}\'')
         comments = post.comments
         return comments_schema.dumps(comments)
     except Exception as e:
@@ -72,7 +79,7 @@ def list_comments(post_id):
 @app.route('/posts/<int:post_id>/comments', methods=['POST'])
 def create_comment(post_id):
     try:
-        post_exists = db.session.query(db.exists().where(Post.post_id == post_id)).scalar()
+        post_exists = db.session.query(db.exists().where(Post.id == post_id)).scalar()
         if not post_exists:
             raise Exception(f'No post found with id \'{post_id}\'')
         json_data = request.get_json()

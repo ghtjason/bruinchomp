@@ -3,7 +3,7 @@ from sqlalchemy import func
 
 
 class Post(db.Model):
-    post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, server_default=func.now())
     title = db.Column(db.String, nullable=False)
@@ -18,11 +18,17 @@ class Post(db.Model):
 
 
 class Comment(db.Model):
-    comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    parent_post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'))
+    id = db.Column(db.Integer, primary_key=True)
+    parent_post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     author = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, server_default=func.now())
     content = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         return '<Comment content %r>' % self.content
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(250), unique=True, nullable=False)
+    password = db.Column(db.String(250), nullable=False)
