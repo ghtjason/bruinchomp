@@ -24,5 +24,3 @@ from models import *    # for db.create_all()
 
 with app.app_context():
     db.create_all()
-print("Running")
-app.run(debug=True)
