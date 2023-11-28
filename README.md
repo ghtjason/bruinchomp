@@ -2,7 +2,7 @@
 ## Backend
 `cd` into `/backend`
 ### Dependencies
-`pip install -r requirement.txt`
+`pip install -r requirements.txt`
 
 
 ### Usage
