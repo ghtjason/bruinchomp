@@ -1,6 +1,6 @@
 # bruinchomp
 ## Backend
-`cd` into `/backend`
+`cd` into `bruinchomp/backend`
 ### Dependencies
 `pip install -r requirements.txt`
 
