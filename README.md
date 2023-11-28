@@ -1,14 +1,10 @@
 # bruinchomp
 ## Backend
+`cd` into `/backend`
 ### Dependencies
-`pip install Flask`
-`pip install --upgrade firebase-admin`
-`pip install cloudinary`
-`pip install python-dotenv`
+`pip install -r requirement.txt`
 
 
 ### Usage
-- Create a 'posts' Collection in Cloud Firestore
-- Save your Google Firebase key as `key.json` and move it into `bruinchomp/backend`
-- Rename `bruinchomp/backend/.env.template` to `.env` and populate with Cloudinary API credentials
-- Start the backend server with `flask --app server run`
+- Rename `bruinchomp/backend/.env.template` to `.env` and populate with Cloudinary API credentials and PostgreSQL database URI
+- Start the backend server with `flask --app app run`
