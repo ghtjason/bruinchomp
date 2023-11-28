@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer, List, ListItem, ListItemText, Button, Stack, Typography, Box, IconButton } from '@mui/material';
+import { Drawer, List, ListItem, ListItemText, Button, Stack, Typography, Box} from '@mui/material';
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 
@@ -25,7 +25,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     return (
-        <Stack direction="row">
+        <Stack direction="row" >
             <Drawer
             sx={{width: 200,
                 flexShrink: 0,

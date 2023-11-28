@@ -1,13 +1,20 @@
 import "../index.css"
-import { Link } from 'react-router-dom';
-import { Grid, Stack, Typography } from '@mui/material'
+import { Stack, Typography, Box } from '@mui/material'
 import Posts from "./Posts";
 
 export default function Home() {
 
     return (
-        <Stack spacing={5} sx= {{ border: 1, width: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
-            <Posts/>
-        </Stack>
+        <Box>
+            <Stack spacing={5} sx= {{  justifyContent: 'flex-start', alignItems: 'center', display: 'flex', marginRight: 1, marginLeft: 1, marginTop: 1}}>
+                <Typography sx={{ fontWeight: 'bold', fontSize: 20}}>
+                    Recent Posts
+                </Typography>
+                <Box marginTop={0}>
+                    <Posts/>
+                </Box>
+            </Stack>            
+        </Box>
+
     )
 }
