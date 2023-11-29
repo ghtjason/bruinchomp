@@ -7,9 +7,17 @@ from models import *
 class PostSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Post
+        include_fk = True
 
 
 class CommentSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Comment
-    parent_post_id = fields.fields.Int(required=False)
+        include_fk = True
+
+    # parent_post_id = fields.fields.Int(required=False)
+
+
+class UserSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
