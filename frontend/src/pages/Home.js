@@ -1,20 +1,23 @@
 import "../index.css"
-import { Stack, Typography, Box } from '@mui/material'
-import Posts from "./Posts";
+import { useEffect, useState } from "react";
+import { Stack, Typography, Box, Paper, InputAdornment, TextField } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search';
+import Feed from "./Feed";
+import Searchbar from "./Searchbar";
 
 export default function Home() {
-
     return (
-        <Box>
-            <Stack spacing={5} sx= {{  justifyContent: 'flex-start', alignItems: 'center', display: 'flex', marginRight: 1, marginLeft: 1, marginTop: 1}}>
-                <Typography sx={{ fontWeight: 'bold', fontSize: 20}}>
-                    Recent Posts
-                </Typography>
-                <Box marginTop={0}>
-                    <Posts/>
+        <Stack direction="row" sx={{justifyContent: 'space-between', width: '80vw'}}>
+            <Stack sx= {{ width: '100%', justifyContent: 'flex-start', alignItems: 'center', marginTop: 2}}>
+                <Box>
+                    <Feed/>
                 </Box>
-            </Stack>            
-        </Box>
+            </Stack>
+            <Box sx={{marginTop: 2}}>
+                <Searchbar/>
+            </Box>
 
+        </Stack>
+           
     )
 }

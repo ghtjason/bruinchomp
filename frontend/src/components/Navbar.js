@@ -14,23 +14,17 @@ const mainNavbarItems = [
         label: 'About',
         route: 'about',
     },
-    {
-        id: 2,
-        label: 'Posts',
-        route: 'posts',
-    }
 ]
 
 const Navbar = () => {
     const navigate = useNavigate();
 
     return (
-        <Stack direction="row" >
+        <Box>
             <Drawer
-            sx={{width: 200,
-                flexShrink: 0,
+            sx={{width: '200px', border: 0, borderColor: '#FFC0CB',
                 '& .MuiDrawer-paper': {
-                    width: 200,
+                    width: '200px',
                     boxSizing: 'border-box',
                     backgroundColor: '#101F33',
                     color: 'rgba(255, 255, 255, 0.7)',
@@ -65,15 +59,15 @@ const Navbar = () => {
                         variant = "contained"
                         component = {Link}
                         to = "/create"
-                        sx = {{borderRadius: 5, width: 150, justifyContent: 'center'}}
+                        sx = {{borderRadius: 5, width: '12vw', maxWidth: '150px', minWidth: '120px', justifyContent: 'center'}}
                         startIcon = {<AddIcon />}
                     >
-                        <Typography sx= {{fontSize: '16px', fontWeigt: '1000'}}> Create </Typography>
+                        <Typography sx= {{fontSize: '16px', fontWeight: '600'}}> Create </Typography>
                     </Button>
                 </Box>
             </Drawer>
             <Outlet />
-        </Stack>
+        </Box>
     );
 };
 

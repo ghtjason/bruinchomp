@@ -5,8 +5,8 @@ import { Box } from '@mui/material';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
-import Posts from './pages/Posts';
 import Create from './pages/CreatePost';
+import SearchFeed from './pages/SearchFeed';
 import axios from "axios";
 
 export default function App() {
@@ -20,8 +20,8 @@ export default function App() {
               <Route path="/" element={<Navigate replace to="/home" />} />
               <Route path="/home" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/posts" element={<Posts />} />
               <Route path="/create" element={<Create />} />
+              <Route path = "/search/:searchTerm"  element = {<SearchFeed />} />
           </Routes>
         </Box>
        </BrowserRouter>

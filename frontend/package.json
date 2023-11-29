@@ -2,7 +2,6 @@
   "name": "bruinchomp",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://8af5-2607-f010-2a7-2021-df6-56c2-65d0-928.ngrok.io",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
