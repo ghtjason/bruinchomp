@@ -3,11 +3,16 @@ from models import *
 from schemas import *
 from app import *
 import cloudinary.uploader
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_bcrypt import Bcrypt
 
 post_schema = PostSchema()
 posts_schema = PostSchema(many=True)
-comment_schema = CommentSchema()
+comment_schema = CommentSchema(dump_only=['parent_post_id'])
 comments_schema = CommentSchema(many=True)
+user_schema = UserSchema(load_only=['password'])
 
 
 @app.route('/posts', methods=['GET'])
@@ -63,6 +68,8 @@ def upload_image():
 def list_comments(post_id):
     try:
         post = Post.query.get(post_id)
+        if post is None:
+            raise Exception(f'No post found with id \'{post_id}\'')
         comments = post.comments
         return comments_schema.dumps(comments)
     except Exception as e:
@@ -72,7 +79,7 @@ def list_comments(post_id):
 @app.route('/posts/<int:post_id>/comments', methods=['POST'])
 def create_comment(post_id):
     try:
-        post_exists = db.session.query(db.exists().where(Post.post_id == post_id)).scalar()
+        post_exists = db.session.query(db.exists().where(Post.id == post_id)).scalar()
         if not post_exists:
             raise Exception(f'No post found with id \'{post_id}\'')
         json_data = request.get_json()
@@ -97,3 +104,56 @@ def delete_comment(post_id, comment_id):
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"error: {e}"
+
+
+# registering new user
+@app.route('/users', methods=['POST'])
+def register_user():
+    try:
+        json_data = request.get_json()
+        data = user_schema.load(json_data)
+        username = data['username']
+        user_exists = db.session.query(db.exists().where(User.username == username)).scalar()
+        if user_exists:
+            raise Exception(f'User with username \'{username}\' already exists')
+        password = data['password']
+        hashed_pass = bcrypt.generate_password_hash(password).decode('utf-8')
+        data['password'] = hashed_pass
+        user = User(**data)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return f"error: {e}"
+
+
+@app.route('/users/<string:username>', methods=['GET'])
+def display_user(username):
+    try:
+        user = User.query.get(username)
+        if user is None:
+            raise Exception(f'No user found with username \'{username}\'')
+        return user_schema.dumps(user)
+    except Exception as e:
+        return f"error: {e}"
+
+
+# login
+@app.route('/sessions', methods=['POST'])
+def login_user():
+    try:
+        json_data = request.get_json()
+        data = user_schema.load(json_data)
+        username = data['username']
+        user = User.query.get(username)
+        if user is None:
+            raise Exception(f'No user found with username \'{username}\'')
+        password = data['password']
+        is_valid = bcrypt.check_password_hash(user.password, password)
+        if not is_valid:
+            raise Exception(f'Incorrect password for user \'{username}\'')
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+    except Exception as e:
+        return f"error: {e}"
+
