@@ -33,6 +33,7 @@ def create_post():
         post = Post(**data)
         db.session.add(post)
         db.session.commit()
+        print(post.image.posts)
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"error: {e}"
@@ -44,10 +45,14 @@ def delete_post(post_id):
         post_to_delete = Post.query.get(post_id)
         if post_to_delete is None:
             raise Exception(f'No post found with id \'{post_id}\'')
-        image_public_id = post_to_delete.image.public_id
-        cloudinary.uploader.destroy(image_public_id)  # delete image inside cloudinary
-        db.session.delete(post_to_delete.image)
+        print(post_to_delete.image.posts)
+        associated_image = post_to_delete.image
         db.session.delete(post_to_delete)  # deletes post
+        # if image has no more associated posts, should generally be true, == 1 bc db not yet committed
+        if len(associated_image.posts) == 1:
+            image_public_id = post_to_delete.image.public_id
+            cloudinary.uploader.destroy(image_public_id)  # delete image inside cloudinary
+            db.session.delete(post_to_delete.image)
         db.session.commit()
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -90,7 +95,7 @@ def create_comment(post_id):
             raise Exception(f'No post found with id \'{post_id}\'')
         json_data = request.get_json()
         data = comment_schema.load(json_data)
-        data['parent_post_id'] = post_id
+        data['parent_post_id'] = post_id    # populates foreign key, which also populates relationship in post
         comment = Comment(**data)
         db.session.add(comment)
         db.session.commit()
@@ -162,6 +167,19 @@ def login_user():
         return jsonify(access_token=access_token), 200
     except Exception as e:
         return f"error: {e}"
+
+# delete user: not working because posts still reference user
+# @app.route('/users/<string:username>', methods=['DELETE'])
+# def delete_user(username):
+#     try:
+#         user_to_delete = User.query.get(username)
+#         if user_to_delete is None:
+#             raise Exception(f'No user found with id \'{user_to_delete}\'')
+#         db.session.delete(user_to_delete)  # deletes user
+#         db.session.commit()
+#         return jsonify({"success": True}), 200
+#     except Exception as e:
+#         return f"error: {e}"
 
 
 # @app.route('/posts/<int:post_id>/likes', methods=['POST'])
