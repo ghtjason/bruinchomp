@@ -13,6 +13,7 @@ posts_schema = PostSchema(many=True)
 comment_schema = CommentSchema(dump_only=['parent_post_id'])
 comments_schema = CommentSchema(many=True)
 user_schema = UserSchema(load_only=['password'])
+image_schema = ImageSchema(load_only=['public_id'])
 
 
 @app.route('/posts', methods=['GET'])
@@ -43,9 +44,10 @@ def delete_post(post_id):
         post_to_delete = Post.query.get(post_id)
         if post_to_delete is None:
             raise Exception(f'No post found with id \'{post_id}\'')
-        image_public_id = post_to_delete.image_public_id
+        image_public_id = post_to_delete.image.public_id
         cloudinary.uploader.destroy(image_public_id)  # delete image inside cloudinary
-        db.session.delete(post_to_delete)  # deletes post inside firebase
+        db.session.delete(post_to_delete.image)
+        db.session.delete(post_to_delete)  # deletes post
         db.session.commit()
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -59,7 +61,11 @@ def upload_image():
         if not image_to_upload:
             raise Exception("no file provided")
         upload_result = cloudinary.uploader.upload(image_to_upload, allowed_formats=['png', 'jpg', 'jpeg'])
-        return jsonify(upload_result)
+        data = image_schema.load(upload_result)
+        image = Image(**data)
+        db.session.add(image)
+        db.session.commit()
+        return image_schema.dumps(image)
     except Exception as e:
         return f"error: {e}"
 
@@ -157,3 +163,18 @@ def login_user():
     except Exception as e:
         return f"error: {e}"
 
+
+# @app.route('/posts/<int:post_id>/likes', methods=['POST'])
+# def delete_post(post_id):
+#     try:
+#         post_to_delete = Post.query.get(post_id)
+#         if post_to_delete is None:
+#             raise Exception(f'No post found with id \'{post_id}\'')
+#         image_public_id = post_to_delete.image.public_id
+#         cloudinary.uploader.destroy(image_public_id)  # delete image inside cloudinary
+#         db.session.delete(post_to_delete.image)
+#         db.session.delete(post_to_delete)  # deletes post
+#         db.session.commit()
+#         return jsonify({"success": True}), 200
+#     except Exception as e:
+#         return f"error: {e}"
