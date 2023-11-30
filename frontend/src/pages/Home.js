@@ -2,7 +2,7 @@ import "../index.css"
 import { useEffect, useState } from "react";
 import { Stack, Typography, Box, Paper, InputAdornment, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-import Feed from "./Feed";
+import Feed from "../components/Feed";
 import Searchbar from "../components/Searchbar";
 
 export default function Home() {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Feed from './Feed'
+import Feed from '../components/Feed'
 import Searchbar from '../components/Searchbar'
 import { Stack, Box, Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'

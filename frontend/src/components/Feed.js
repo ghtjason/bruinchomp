@@ -2,10 +2,10 @@ import React from 'react';
 import Post from './Post';
 import { Box, Stack, Button, Menu, MenuItem } from '@mui/material'
 import { useState, useEffect } from "react";
-import FilterMenu from '../components/FilterMenu';
+import FilterMenu from './FilterMenu';
 
 import { fetchPosts } from '../utils/fetchPosts';
-import Searchbar from '../components/Searchbar';
+import Searchbar from './Searchbar';
 import { placeholderPosts } from '../utils/constants';
 import { dining_hall, meal_period } from '../utils/constants';
 
