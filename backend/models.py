@@ -10,6 +10,7 @@ class Post(db.Model):
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
     hall = db.Column(db.String, nullable=False)
+    meal_period = db.Column(db.String, nullable=False)
     # post is child of image because foreign key? not sure how else to do this
     image_url = db.Column(db.ForeignKey('image.url'), nullable=False)
     image = db.relationship('Image', back_populates='posts')
@@ -49,6 +50,8 @@ class Image(db.Model):
     posts = db.relationship('Post', back_populates='image')
 
 
-class PostLikedUsers(db.Model):
-    post_id = db.Column(db.ForeignKey('post.id'), nullable=False, primary_key=True)
-    username = db.Column(db.ForeignKey('user.username'), nullable=False, primary_key=True)
+post_liked_users = db.Table(
+    'post_liked_users',
+    db.Column('post_id', db.ForeignKey('post.id'), primary_key=True),
+    db.Column('username', db.ForeignKey('user.username'), primary_key=True)
+)
