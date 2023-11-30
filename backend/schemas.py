@@ -1,6 +1,9 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from models import *
-from marshmallow import EXCLUDE
+from marshmallow import EXCLUDE, fields, validate
+
+DINING_HALLS = ['Bruin Plate', 'De Neve', 'Epicuria']
+MEAL_PERIODS = ['Breakfast', 'Lunch', 'Dinner']
 
 
 class PostSchema(SQLAlchemyAutoSchema):
@@ -8,21 +11,41 @@ class PostSchema(SQLAlchemyAutoSchema):
         model = Post
         include_fk = True
 
+    author_username = auto_field(dump_only=True)
+    hall = auto_field(validate=validate.OneOf(DINING_HALLS))
+    meal_period = auto_field(validate=validate.OneOf(MEAL_PERIODS))
+    like_count = fields.Method('get_like_count')
+    is_liked = fields.Method('get_is_liked')
+
+    @staticmethod
+    def get_like_count(obj):
+        return len(obj.liked_users)
+
+    def get_is_liked(self, obj):
+        if self.context["user"] is None:
+            return False
+        return self.context["user"] in obj.liked_users
+
 
 class CommentSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Comment
         include_fk = True
 
-    # parent_post_id = fields.fields.Int(required=False)
+    parent_post_id = auto_field(dump_only=True)
+    author_username = auto_field(dump_only=True)
 
 
 class UserSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
 
+    password = auto_field(load_only=True)
+
 
 class ImageSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Image
         unknown = EXCLUDE
+
+    public_id = auto_field(load_only=True)
