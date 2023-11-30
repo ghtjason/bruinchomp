@@ -6,7 +6,7 @@ import os
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
 from flask_bcrypt import Bcrypt
-
+from flask_cors import CORS
 
 load_dotenv()
 cloudinary.config(
@@ -16,6 +16,7 @@ cloudinary.config(
 )
 
 app = Flask(__name__)
+CORS(app)
 
 # setting up sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
@@ -38,4 +39,5 @@ from models import *  # for db.create_all()
 
 
 with app.app_context():
+    db.drop_all()
     db.create_all()

@@ -1,7 +1,6 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from marshmallow_sqlalchemy import fields
-
 from models import *
+from marshmallow import EXCLUDE
 
 
 class PostSchema(SQLAlchemyAutoSchema):
@@ -21,3 +20,9 @@ class CommentSchema(SQLAlchemyAutoSchema):
 class UserSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
+
+
+class ImageSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Image
+        unknown = EXCLUDE
