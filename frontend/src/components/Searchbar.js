@@ -6,14 +6,21 @@ import SearchIcon from '@mui/icons-material/Search';
 
 const Searchbar = () => {
   const [searchTerm, setSearchTerm] = useState('')
+  const [error, setError] = useState(false)
   const navigate = useNavigate()
 
   const handleSearch = (e) => {
       if (e.key === 'Enter') {
           e.preventDefault()
           if(searchTerm) {
-            console.log(searchTerm)
-            navigate(`/search/${searchTerm}`)
+            if(!searchTerm.includes('/')) {
+              console.log('searched in searchbar for: ', searchTerm)
+              navigate(`/search/${searchTerm}`)
+              setError(false)
+            }
+            else {
+              setError(true)
+            }
           }
           setSearchTerm('')
       }
@@ -21,6 +28,8 @@ const Searchbar = () => {
 
   return (
     <TextField 
+      error={error}
+      label={error ? 'Error' : ''}
       variant="outlined"
       placeholder="Search..."
       onKeyDown={handleSearch}

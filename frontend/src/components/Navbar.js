@@ -2,19 +2,7 @@ import React from 'react'
 import { Drawer, List, ListItem, ListItemText, Button, Stack, Typography, Box} from '@mui/material';
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
-
-const mainNavbarItems = [
-    {
-        id: 0,
-        label: 'Home',
-        route: 'home',
-    },
-    {
-        id: 1,
-        label: 'About',
-        route: 'about',
-    },
-]
+import { mainNavbarItems } from '../utils/constants';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -22,18 +10,15 @@ const Navbar = () => {
     return (
         <Box>
             <Drawer
-            sx={{width: '200px', border: 0, borderColor: '#FFC0CB',
-                '& .MuiDrawer-paper': {
-                    width: '200px',
-                    boxSizing: 'border-box',
-                    backgroundColor: '#101F33',
-                    color: 'rgba(255, 255, 255, 0.7)',
-                },
-                '& .Mui-selected': {
-                    color: 'red',
+                sx={{width: '200px', border: 0, borderColor: '#FFC0CB',
+                    '& .MuiDrawer-paper': {
+                        width: '200px',
+                        boxSizing: 'border-box',
+                        backgroundColor: '#101F33',
+                        color: 'rgba(255, 255, 255, 0.7)',
                 }}}
-            variant="permanent"
-            anchor="left"
+                variant="permanent"
+                anchor="left"
             >
                 <List>
                 {mainNavbarItems.map((item) => (

@@ -2,94 +2,79 @@ import React from 'react';
 import Post from './Post';
 import { Box, Stack, Button, Menu, MenuItem } from '@mui/material'
 import { useState, useEffect } from "react";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import FilterMenu from '../components/FilterMenu';
 
 import { fetchPosts } from '../utils/fetchPosts';
+import Searchbar from '../components/Searchbar';
+import { placeholderPosts } from '../utils/constants';
+import { dining_hall, meal_period } from '../utils/constants';
 
 
- const Feed = () => {
+ const Feed = ({searchTerm}) => {
 
-    // const [posts, setPosts] = useState(
-    //     [
-    //         {title: 'Bruin Plate', category: 'Bruin_Plate', body: 'lorem iosum', Post_image: 'https://bruinplate.hh.ucla.edu/img/Home_Slide_MOC.jpg', author: 'Bob', id: 1},
-    //         {title: 'Epicuria', category: 'Epicuria', body: 'lorem iosum', Post_image: 'https://portal.housing.ucla.edu/sites/default/files/media/images/DiningWebsite_HeaderImages_EpicuriaAckerman2.png', author: 'John', id: 2},
-    //         {title: 'De Neve', category: 'De_Neve', body: 'lorem iosum', Post_image: 'https://portal.housing.ucla.edu/sites/default/files/media/images/DiningWebsite_HeaderImages_DeNeve.png', author: 'Smith', id: 3}    
-    //     ]
-    // )
-    const [posts, setPosts] = useState([])
-    const [category, setCategory] = useState('No_filter')
-    const [filteredPosts, setFilteredPosts] = useState(posts)
+    const [posts, setPosts] = useState(placeholderPosts);
 
-    useEffect(() => {
-        fetchPosts().then(result => {
-            setPosts(result)
-        })
-    }, [])
+    // useEffect(() => {
+    //     fetchPosts({searchTerm}).then(result => {
+    //         setPosts(result)
+    //     })
+    // }, [searchTerm])
 
-    // code to implement the Menu logic
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleMenuClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleChoiceSelect = (dining_hall) => {
-        setCategory(dining_hall);
-        setAnchorEl(null);
-    };
-    // putting handleFilter inside useEffect, only call when category or post changes
+    const [categories, setCategories] = useState([]);
+    const [filteredPosts, setFilteredPosts] = useState(posts);
+
     useEffect(() => {
         const handleFilter = () => {
-            // console.log(category)
-            if (category === 'No_filter')
+            console.log(categories)
+            if (categories.length == 0)
             {
                 setFilteredPosts(posts)
             }
             else
             {
-                const filteredPosts = posts.filter((post) => post.category === category)
+                const filteredPosts = posts.filter((post) => {
+                    let onlyDiningHalls = true
+                    let onlyMealPeriods = true
+                    categories.map((item) => {
+                        if(dining_hall.includes(item)) {
+                            onlyMealPeriods = false
+                        }
+                        if(meal_period.includes(item)) {
+                            onlyDiningHalls = false
+                        }
+                    })
+                    if(onlyDiningHalls) {
+                        return categories.includes(post.hall)
+                    }
+                    else if(onlyMealPeriods) {
+                        return categories.includes(post.meal_period)
+                    }
+                    else {
+                        return categories.includes(post.hall) && categories.includes(post.meal_period)
+                    }
+                })
                 setFilteredPosts(filteredPosts)    
             }
         }
         handleFilter()
-    }, [category, posts])
+    }, [categories, posts])
 
     return (
         <Stack>
-        
-        <div className="Posts">
-            <Box>
-                <Button
-                    onClick={handleMenuClick}
-                    variant = "outlined"
-                    sx={{height: 35}}
-                >
-                    Filter Dining Halls<ArrowDropDownIcon/>
-                </Button>
-                <Menu
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={() => handleClose(category)}
-                >
-                    <MenuItem onClick={() => handleChoiceSelect("Bruin_Plate")}>Bruin Plate</MenuItem>
-                    <MenuItem onClick={() => handleChoiceSelect("Epicuria")}>Epicuria</MenuItem>
-                    <MenuItem onClick={() => handleChoiceSelect("De_Neve")}>De Neve</MenuItem>
-                    <MenuItem onClick={() => handleChoiceSelect("No_filter")}>None</MenuItem>
-                </Menu> 
-            </Box>
+            <div className="Posts">
+                <Stack direction="row" sx={{width: '50vw', maxWidth: 900, minWidth: 600, justifyContent: 'space-between', mb: 2}}>
+                    <FilterMenu categories={categories} setCategories={setCategories}/>
+                    <Searchbar/>
+                </Stack>
 
-            
-            <Stack >
-                {filteredPosts.map((posts) => (
-                    <div className="post-preview" key={posts.id}>
-                        <Post post={posts}/>
-                    </div>
-                ))}
-            </Stack>
-
-        </div>
+                <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>
+                    {filteredPosts.map((posts) => (
+                        <div key={posts.id}>
+                            <Post post={posts}/>
+                        </div>
+                    ))}
+                </Stack>
+            </div>
         </Stack>
     )
 }

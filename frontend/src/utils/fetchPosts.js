@@ -9,10 +9,19 @@ let config = {
   }
 };
 
-export const fetchPosts = async () => {
+export const fetchPosts = async ({searchTerm}) => {
   try {
-    const response = await axios.request(config);
-    return response.data;
+    if(searchTerm === '') {
+      console.log('reached here')
+      console.log(searchTerm)
+      const response = await axios.request(config);
+      return response.data;
+    }
+    else {
+      // query API with the search term
+      console.log('reached here instead with: ', searchTerm)
+      return;
+    }
   } 
   catch (error) {
     console.log('Error:', error);

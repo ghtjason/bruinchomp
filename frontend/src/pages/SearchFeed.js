@@ -1,20 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Feed from './Feed'
-import Searchbar from './Searchbar'
-import { Stack, Box } from '@mui/material'
+import Searchbar from '../components/Searchbar'
+import { Stack, Box, Typography } from '@mui/material'
+import { useParams } from 'react-router-dom'
 
 const SearchFeed = () => {
-  return (
-    <Stack direction="row" sx={{justifyContent: 'space-between', width: '80vw'}}>
-      <Stack sx= {{ width: '100%', justifyContent: 'flex-start', alignItems: 'center', marginTop: 2}}>
-          <Box>
-              <Feed/>
-          </Box>
-      </Stack>
-      <Box sx={{marginTop: 2}}>
-          <Searchbar/>
-      </Box>
+  const {searchTerm} = useParams();
+  console.log('searchFeed received: ', searchTerm)
 
+  return (
+    <Stack sx= {{ width: '70vw', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
+      <Typography mb={2} variant="h5" fontWeight={"bold"}>
+        Showing search results for <span style ={{color:'#FF0000'}}>{searchTerm}</span>:
+      </Typography>
+      <Box>
+        <Feed searchTerm={searchTerm}/>
+      </Box>
     </Stack>
   )
 }
