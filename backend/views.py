@@ -26,6 +26,22 @@ def list_posts():
         return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
+    
+
+@app.route('/posts/<filter_by>/<key>', methods=['GET'])
+def list_filter_posts(filter_by, key):
+    try:
+        if filter_by == "user":
+            posts = Post.query.filter_by(author_username=key).all()
+        elif filter_by == "title":
+            posts = Post.query.filter_by(title=key).all()
+        elif filter_by == "hall":
+            posts = Post.query.filter_by(hall=key).all()
+        else:
+            posts = Post.query.all()
+        return posts_schema.dumps(posts)
+    except Exception as e:
+        return f"error: {e}"
 
 
 @app.route('/posts', methods=['POST'])
