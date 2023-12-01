@@ -29,7 +29,7 @@ def list_posts():
     
 
 @app.route('/posts/<filter_by>/<key>', methods=['GET'])
-def list_filter_posts(filter_by, key):
+def list_posts_contains(filter_by, key):
     try:
         if filter_by == "user":
             posts = Post.query.filter_by(author_username=key).all()
@@ -39,6 +39,20 @@ def list_filter_posts(filter_by, key):
             posts = Post.query.filter_by(hall=key).all()
         else:
             posts = Post.query.all()
+        return posts_schema.dumps(posts)
+    except Exception as e:
+        return f"error: {e}"
+    
+@app.route('/posts/search/<keyword>', methods=['GET'])
+def list_posts_keyword(keyword):
+    try:
+        regex = '\m' + keyword.lower() + '\M'
+        print(regex)
+        user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
+        content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
+        hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
+        title_posts = Post.query.filter(func.lower(Post.title).op('~')(regex))
+        posts = user_posts.union(content_posts, hall_posts, title_posts).all()
         return posts_schema.dumps(posts)
     except Exception as e:
         return f"error: {e}"
