@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-const Login = () => {
+
+const PASSWORD_REQ = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const Register = () => {
   //Modifies the state
-  const [email, setEmail] = useState();
-  const [pass, setPass] = useState();
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [matchpass, setMatchpass] = useState("");
+  const [validPassword, setValidPassword] = useState("");
 
   const handleSubmit = (e) => {
     //Prevent reloading the page
@@ -23,7 +27,6 @@ const Login = () => {
           placeholder="myemail@gmail.com"
           id="email"
           name="email"
-          onChange={(e) => setEmail(e.target.value)}
         />
         <label for="password">Password</label>
         <input
@@ -32,7 +35,14 @@ const Login = () => {
           placeholder="********"
           id="password"
           name="password"
-          onChange={(e) => setPass(e.target.value)}
+        />
+        <label for="password">Password</label>
+        <input
+          value={matchpass}
+          type="password"
+          placeholder="********"
+          id="password"
+          name="password"
         />
         <button type="submit">Login</button>
       </form>
@@ -41,4 +51,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
