@@ -52,7 +52,8 @@ def list_posts_keyword(keyword):
         content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
         hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
         title_posts = Post.query.filter(func.lower(Post.title).op('~')(regex))
-        posts = user_posts.union(content_posts, hall_posts, title_posts).all()
+        meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
+        posts = user_posts.union(content_posts, hall_posts, title_posts, meal_posts).all()
         return posts_schema.dumps(posts)
     except Exception as e:
         return f"error: {e}"
