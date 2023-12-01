@@ -9,3 +9,4 @@ flask_bcrypt
 marshmallow~=3.20.1
 flask_cors
 psycopg2
+gunicorn
