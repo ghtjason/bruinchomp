@@ -40,9 +40,9 @@ const FilterMenu = ({categories, setCategories}) => {
         )}
         sx={{width: 300}}
       >
-        <MenuItem value="Bruin_Plate">Bruin Plate</MenuItem>
+        <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
         <MenuItem value="Epicuria">Epicuria</MenuItem>
-        <MenuItem value="De_Neve">De Neve</MenuItem>
+        <MenuItem value="De Neve">De Neve</MenuItem>
         <Divider sx={{borderBottomWidth: 3}} />
         <MenuItem value="Breakfast">Breakfast</MenuItem>
         <MenuItem value="Lunch">Lunch</MenuItem>

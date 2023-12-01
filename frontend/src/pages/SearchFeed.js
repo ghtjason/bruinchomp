@@ -9,7 +9,7 @@ const SearchFeed = () => {
   console.log('searchFeed received: ', searchTerm)
 
   return (
-    <Stack sx= {{ width: '70vw', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
+    <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
       <Typography mb={2} variant="h5" fontWeight={"bold"}>
         Showing search results for <span style ={{color:'#FF0000'}}>{searchTerm}</span>:
       </Typography>

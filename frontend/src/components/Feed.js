@@ -12,21 +12,23 @@ import { dining_hall, meal_period } from '../utils/constants';
 
  const Feed = ({searchTerm}) => {
 
-    const [posts, setPosts] = useState(placeholderPosts);
+    // used for placeholding
+    //const [posts, setPosts] = useState(placeholderPosts);
 
-    // useEffect(() => {
-    //     fetchPosts({searchTerm}).then(result => {
-    //         setPosts(result)
-    //     })
-    // }, [searchTerm])
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        fetchPosts(searchTerm).then(result => {
+            setPosts(result)
+        })
+    }, [searchTerm])
 
     const [categories, setCategories] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState(posts);
 
     useEffect(() => {
         const handleFilter = () => {
-            console.log(categories)
-            if (categories.length == 0)
+            if (categories.length === 0)
             {
                 setFilteredPosts(posts)
             }

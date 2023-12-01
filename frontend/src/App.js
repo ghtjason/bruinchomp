@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 
 import SearchFeed from "./pages/SearchFeed";
 import axios from "axios";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -25,7 +26,7 @@ export default function App() {
             <Route path="/create" element={<Create />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-
+            <Route path="/profile" element={<Profile />} />
             <Route path="/search/:searchTerm" element={<SearchFeed />} />
           </Routes>
         </Box>

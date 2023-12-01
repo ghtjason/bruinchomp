@@ -1,6 +1,8 @@
 export const dining_hall = ["De_Neve", "Bruin_Plate", "Epicuria"];
 export const meal_period = ["Breakfast", "Lunch", "Dinner"];
 
+export const auth_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwMTQyNDIzNiwianRpIjoiYTI2N2NkYWQtMWYyMi00NTBlLTg2MTgtMDU4NDYwN2FmNzQ1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imphc29uIiwibmJmIjoxNzAxNDI0MjM2LCJleHAiOjE3MDE1OTcwMzZ9.xcooN1MBkZx6l8PeOlYKSUl0vx5AgnxYp6vFpFRnO8I'
+
 export const mainNavbarItems = [
   {
     id: 0,
@@ -24,6 +26,11 @@ export const mainNavbarItems = [
     id: 3,
     label: "Register",
     route: "register",
+  },
+  {
+    id: 4,
+    label: "Profile",
+    route: "profile",
   },
 ];
 

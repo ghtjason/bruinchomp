@@ -1,26 +1,27 @@
 import axios from "axios";
+import { auth_token } from "./constants";
 
-let config = {
-  method: 'get',
-  maxBodyLength: Infinity,
-  url: 'https://a36e-169-232-110-172.ngrok-free.app/posts',
-  headers: { 
-    'ngrok-skip-browser-warning': 'true',
-  }
-};
 
-export const fetchPosts = async ({searchTerm}) => {
+export const fetchPosts = async (searchTerm) => {
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: 'https://api-m46o.onrender.com/posts',
+    headers: { 
+      'ngrok-skip-browser-warning': 'true',
+      'Authorization': auth_token
+    }
+  };
   try {
     if(searchTerm === '') {
-      console.log('reached here')
-      console.log(searchTerm)
       const response = await axios.request(config);
       return response.data;
     }
     else {
       // query API with the search term
+      const response = await axios.request(config);
       console.log('reached here instead with: ', searchTerm)
-      return;
+      return response.data;
     }
   } 
   catch (error) {

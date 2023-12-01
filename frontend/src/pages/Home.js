@@ -7,7 +7,7 @@ import Searchbar from "../components/Searchbar";
 
 export default function Home() {
     return (
-        <Stack sx= {{ width: '70vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+        <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
             <Box>
                 <Feed searchTerm={''}/>
             </Box>
