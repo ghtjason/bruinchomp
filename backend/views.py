@@ -37,6 +37,8 @@ def list_posts_contains(filter_by, key):
             posts = Post.query.filter_by(title=key).all()
         elif filter_by == "hall":
             posts = Post.query.filter_by(hall=key).all()
+        elif filter_by == "meal-period":
+            posts = Post.query.filter_by(meal_period=key).all()
         else:
             posts = Post.query.all()
         return posts_schema.dump(posts)
@@ -45,16 +47,23 @@ def list_posts_contains(filter_by, key):
 
 
 @app.route('/posts/search/<keyword>', methods=['GET'])
-def list_posts_keyword(keyword):
+@app.route('/posts/search/<keyword>/<order>', methods=['GET'])
+def list_posts_keyword(keyword, order=None):
     try:
         regex = '\m' + keyword.lower() + '\M'
-        print(regex)
         user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
         content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
         hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
         title_posts = Post.query.filter(func.lower(Post.title).op('~')(regex))
         meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
-        posts = user_posts.union(content_posts, hall_posts, title_posts, meal_posts).all()
+        order_by = Post.timestamp.desc()
+        if(order == "popular"):
+            order_by = None
+            # TODO: come up with a popularity sort
+        elif(order == "relevance"):
+            order_by = None
+            # TODO: come up with a relevance sort
+        posts = user_posts.union(content_posts, hall_posts, title_posts, meal_posts).order_by(order_by).all()
         return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
