@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from 'axios'
-import { Stack, Box, Typography, Button } from '@mui/material'
+import { Stack, Box, Typography, Button, Card, CardContent, TextField } from '@mui/material'
 import Cookies from 'js-cookie'; // cookiessssss
+import { useNavigate } from 'react-router-dom'; // for create account redirection
+
 
 const Login = () => {
   //Modifies the state
@@ -15,12 +17,14 @@ const Login = () => {
     console.log(email);
     console.log(pass);
 
+    setMessage('Processing...');
+
     // handle logging in: can split into utils file or seperate function later
     let data = JSON.stringify({
       "username": email,
       "password": pass
     });
-    
+
     let config = {
       method: 'post',
       url: 'https://api-m46o.onrender.com/login',
@@ -49,6 +53,41 @@ const Login = () => {
   };
 
 
+  const handleLogout = () => {
+    Cookies.remove('authToken'); // remove authToken cookie
+    window.location.reload(); // reload the page
+  }
+
+  const navigate = useNavigate()
+  const handleCreateRedir = () => {
+    navigate('/register');
+  }
+
+  // CSS
+  const loginContainerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '75vh',
+    width: '100%'
+  };
+  const cardStyle = {
+    width: '300px',
+    textAlign: 'center',
+  };
+  const formFieldStyle = {
+    marginBottom: '20px',
+  };
+  const buttonStyle = {
+    marginRight: '10px',
+  };
+  const errorMsgStyle = {
+    color: 'red',
+    fontSize: '80%',
+    marginBottom: '20px',
+  };
+
+
   // check if user is logged in & display accordingly
   const authToken = Cookies.get('authToken');
   console.log()
@@ -60,42 +99,54 @@ const Login = () => {
         <Typography variant="body2">
           You are already logged in!
         </Typography>
+        <Button variant="contained" color="primary" onClick={handleLogout}>
+          Logout
+        </Button>
       </>
     );
   // if user is not logged in:
   } else {
     console.log('Authentication Token not found.');    
     return (
-      //Placeholder is what is displayed in input before they type
-      //Label is the tags displayed ontop of the tags itself
-      //Button type = submit it will fire handleSubmit function
-      <>
-        <form onSubmit={handleSubmit}>
-          <label>Email</label>
-          <input
-            value={email}
-            //type="email"
-            placeholder="myemail@gmail.com"
-            id="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label for="password">Password</label>
-          <input
-            value={pass}
-            type="password"
-            placeholder="********"
-            id="password"
-            name="password"
-            onChange={(e) => setPass(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </form>
-        <button>Signup here</button>
-        <Typography variant="body2">
-          {message}
-        </Typography>
-      </>
+      <div style={loginContainerStyle}>
+        <Card style={cardStyle}>
+          <CardContent>
+            <h2>Login</h2>
+            <form>
+              <TextField
+                style={formFieldStyle}
+                label="Username"
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                style={formFieldStyle}
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setPass(e.target.value)}
+              />
+              <Typography variant="body2" style={errorMsgStyle}>
+                {message}
+              </Typography>
+              <Button
+                style={formFieldStyle}
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={handleSubmit}
+              >
+                Log in
+              </Button>
+            </form>
+            <Button variant="outlined" style={buttonStyle} onClick={handleCreateRedir}>
+              Create Account
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
