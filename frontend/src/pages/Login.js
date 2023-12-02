@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from 'axios'
+
 const Login = () => {
   //Modifies the state
   const [email, setEmail] = useState();
@@ -9,6 +11,31 @@ const Login = () => {
     e.preventDefault();
     console.log(email);
     console.log(pass);
+
+    // can split into utils file later
+    let data = JSON.stringify({
+      "username": email,
+      "password": pass
+    });
+    
+    let config = {
+      method: 'post',
+      url: 'https://api-m46o.onrender.com/login',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data)); // auth token
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+
   };
   return (
     //Placeholder is what is displayed in input before they type
