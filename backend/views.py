@@ -26,7 +26,7 @@ def list_posts():
         return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
-    
+
 
 @app.route('/posts/<filter_by>/<key>', methods=['GET'])
 def list_posts_contains(filter_by, key):
@@ -39,10 +39,11 @@ def list_posts_contains(filter_by, key):
             posts = Post.query.filter_by(hall=key).all()
         else:
             posts = Post.query.all()
-        return posts_schema.dumps(posts)
+        return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
-    
+
+
 @app.route('/posts/search/<keyword>', methods=['GET'])
 def list_posts_keyword(keyword):
     try:
@@ -54,7 +55,7 @@ def list_posts_keyword(keyword):
         title_posts = Post.query.filter(func.lower(Post.title).op('~')(regex))
         meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
         posts = user_posts.union(content_posts, hall_posts, title_posts, meal_posts).all()
-        return posts_schema.dumps(posts)
+        return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
 
