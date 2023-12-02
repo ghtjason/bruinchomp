@@ -26,7 +26,6 @@ function createUser(email, password) {
   });
 }
 
-
 const PASSWORD_REQ = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const Register = () => {
   //Modifies the state
@@ -45,7 +44,7 @@ const Register = () => {
     }
   };
 
-  
+
   return (
     //Placeholder is what is displayed in input before they type
     //Label is the tags displayed ontop of the tags itself

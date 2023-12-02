@@ -4,6 +4,7 @@ import Feed from '../components/Feed'
 import { useState, useEffect } from 'react'
 import { fetchPosts } from '../utils/fetchPosts'
 import Post from '../components/Post'
+import Cookies from 'js-cookie'; // cookiessssss
 
 const Profile = () => {
   // css
@@ -37,7 +38,7 @@ const Profile = () => {
       width: '85%',
     },
   };
-
+  
   // fetch user information & posts
   const [posts, setPosts] = useState([]);
   //search for user later
