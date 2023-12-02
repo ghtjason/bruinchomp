@@ -54,9 +54,10 @@ def search_posts():
         user = url_params.get('user', None)
         hall = url_params.get('hall', None)
         meal = url_params.get('meal', None)
-        order = url_params.get('order', None)
+        order = url_params.get('order', 'recent')
         post_query = None
         if keyword:
+            keyword = keyword.replace("-", " ")
             regex = '\m' + keyword.lower() + '\M'
             user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
             content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
@@ -65,11 +66,14 @@ def search_posts():
             meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
             post_query = user_posts.union(content_posts, hall_posts, title_posts, meal_posts)
         if user:
-            post_query = post_query.filter_by(author_username=user) if post_query else Post.query.filter_by(author_username=user)
+            user = user.replace("-", " ")
+            post_query = post_query.filter(func.lower(Post.author_username)==user.lower()) if post_query else Post.query.filter(func.lower(Post.author_username)==user.lower())
         if hall:
-            post_query = post_query.filter_by(hall=hall) if post_query else Post.query.filter_by(hall=hall)
+            hall = hall.replace("-", " ")
+            post_query = post_query.filter(func.lower(Post.hall)==hall.lower()) if post_query else Post.query.filter(func.lower(Post.hall)==hall.lower())
         if meal:
-            post_query = post_query.filter_by(meal_period=meal) if post_query else Post.query.filter_by(meal_period=meal)
+            meal = meal.replace("-", " ")
+            post_query = post_query.filter(func.lower(Post.meal_period)==meal.lower()) if post_query else Post.query.filter(func.lower(Post.meal_period)==meal.lower())
         if(order == "popular"):
             posts = post_query.all()
             # TODO: come up with a popularity sort
