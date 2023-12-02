@@ -45,25 +45,39 @@ def list_posts_contains(filter_by, key):
     except Exception as e:
         return f"error: {e}"
 
-
-@app.route('/posts/search/<keyword>', methods=['GET'])
-@app.route('/posts/search/<keyword>/<order>', methods=['GET'])
-def list_posts_keyword(keyword, order=None):
+    
+@app.route('/posts/search', methods=['GET'])
+def search_posts():
     try:
-        regex = '\m' + keyword.lower() + '\M'
-        user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
-        content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
-        hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
-        title_posts = Post.query.filter(func.lower(Post.title).op('~')(regex))
-        meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
-        order_by = Post.timestamp.desc()
+        url_params = request.args
+        keyword = url_params.get('key', None)
+        user = url_params.get('user', None)
+        hall = url_params.get('hall', None)
+        meal = url_params.get('meal', None)
+        order = url_params.get('order', None)
+        post_query = None
+        if keyword:
+            regex = '\m' + keyword.lower() + '\M'
+            user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
+            content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
+            hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
+            title_posts = Post.query.filter(func.lower(Post.title).op('~')(regex))
+            meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
+            post_query = user_posts.union(content_posts, hall_posts, title_posts, meal_posts)
+        if user:
+            post_query = post_query.filter_by(author_username=user) if post_query else Post.query.filter_by(author_username=user)
+        if hall:
+            post_query = post_query.filter_by(hall=hall) if post_query else Post.query.filter_by(hall=hall)
+        if meal:
+            post_query = post_query.filter_by(meal_period=meal) if post_query else Post.query.filter_by(meal_period=meal)
         if(order == "popular"):
-            order_by = None
+            posts = post_query.all()
             # TODO: come up with a popularity sort
         elif(order == "relevance"):
-            order_by = None
+            posts = post_query.all()
             # TODO: come up with a relevance sort
-        posts = user_posts.union(content_posts, hall_posts, title_posts, meal_posts).order_by(order_by).all()
+        else:
+            posts = post_query.order_by(Post.timestamp.desc()).all()
         return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
