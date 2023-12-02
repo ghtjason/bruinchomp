@@ -29,3 +29,24 @@ code {
   color: rgb(7, 109, 192);
   margin-bottom: 8px;
 }
+
+.createPost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* This ensures the container takes the full height of the viewport */
+}
+
+.createForm {
+  width: 300px; /* Adjust the width based on your design */
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+  width: 100%;
+}
