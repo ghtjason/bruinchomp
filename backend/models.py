@@ -38,11 +38,12 @@ class User(db.Model):
     username = db.Column(db.String(250), primary_key=True)
     password = db.Column(db.String(250), nullable=False)
     timestamp = db.Column(db.DateTime, server_default=func.now())
-    profile_image_url = db.Column(db.ForeignKey('image.url'), nullable=False)
+    profile_image_url = db.Column(db.ForeignKey('image.url'), nullable=True)
     profile_image = db.relationship('Image', back_populates='users')
     authored_posts = db.relationship('Post', back_populates='author', cascade='all, delete')
     authored_comments = db.relationship('Comment', back_populates='author', cascade='all, delete')
     liked_posts = db.relationship('Post', secondary='post_liked_users', back_populates='liked_users')
+    bio = db.Column(db.String, nullable=True)
 
 
 class Image(db.Model):
