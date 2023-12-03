@@ -47,11 +47,14 @@ const Register = () => {
     
     axios.request(config)
     .then((response) => {
-      if(response.success) {
+      if(response.data.success) {
         setMessage("Account created successfully!");
         console.log(JSON.stringify(response.data)); // success?
       }
-      else setMessage("Account with username already exists");
+      else {
+        setMessage("Account with username already exists");
+        console.log(JSON.stringify(response.data));
+      }
     })
     .catch((error) => {
       setMessage("error");
@@ -87,7 +90,6 @@ const errorMsgStyle = {
 const authToken = Cookies.get('authToken');
 // if user is logged in:
 if (authToken) {
-  console.log('Authentication Token:', authToken);
   return (
     <>
       <Typography variant="body2">
@@ -100,7 +102,6 @@ if (authToken) {
   );
 // if user is not logged in:
 } else {
-  console.log('Authentication Token not found.');    
   return (
     <div style={loginContainerStyle}>
       <Card style={cardStyle}>
