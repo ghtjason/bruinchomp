@@ -1,21 +1,18 @@
 import { useState } from "react";
 import "../index.css";
 import axios from "axios";
+import { auth_token } from "../utils/constants";
 import {
-  Stack,
-  Box,
-  Typography,
   Button,
-  Card,
-  CardContent,
   TextField,
   FormControl,
   Select,
   MenuItem,
   InputLabel,
 } from "@mui/material";
-import Cookies from "js-cookie"; // cookiessssss
-import { NoCellRounded, Title } from "@mui/icons-material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
+import { CompareSharp } from "@mui/icons-material";
 
 const Create = () => {
   const [title, setTitle] = useState("");
@@ -24,6 +21,45 @@ const Create = () => {
   const [body, setBody] = useState("");
   const [mealPeriod, setMealperiod] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  const uploadImage = async (e) => {
+    //Process image url first
+    e.preventDefault();
+    const FormData = require("form-data");
+
+    let data = new FormData();
+    data.append("file", image);
+
+    let config = {
+      method: "post",
+      url: "https://api-m46o.onrender.com/image",
+      headers: {
+        Authorization: auth_token,
+      },
+      data: data,
+    };
+    console.log("worked");
+    try {
+      console.log(config);
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log("Response data:", error.response.data);
+        console.log("Response status:", error.response.status);
+        console.log("Response headers:", error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log("No response received:", error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error during request setup:", error.message);
+      }
+      console.log("Error config:", error.config);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,9 +79,8 @@ const Create = () => {
     if (!image) {
       setErrorMsg("Please upload an image");
     }
-    //Process image url first
-
     //Create basic post to upload to server
+    /*
     let data = JSON.stringify({
       title: title,
       content: body,
@@ -53,12 +88,24 @@ const Create = () => {
       hall: dininghall,
       meal_period: mealPeriod,
     });
+
+    let config = {
+      method: "post",
+      url: "https://api-m46o.onrender.com/Posts",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios.request;
+    */
   };
 
   return (
     <div className="createPost">
       <h2>Create new post</h2>
-      <form onSubmit={handleSubmit} className="createForm">
+      <form className="createForm">
         <div className="formGroup">
           <label>Post title</label>
           <TextField
@@ -104,20 +151,30 @@ const Create = () => {
             type="text"
             required
             value={body}
+            fullWidth
             onChange={(e) => setBody(e.target.value)}
           ></textarea>
         </div>
         <div className="formGroup">
-          <label>Upload image file</label>
           <input
             type="file"
             accept="image/*"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            onChange={(e) => {
+              setImage(e.target.files[0]);
+            }}
           />
+          <Button
+            component="label"
+            variant="contained"
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload image
+          </Button>
         </div>
       </form>
-      <Button variant="outlined">Add Post</Button>
+      <Button variant="outlined" onClick={uploadImage}>
+        Add Post
+      </Button>
     </div>
   );
 };
