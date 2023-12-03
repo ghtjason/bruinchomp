@@ -83,10 +83,8 @@ const errorMsgStyle = {
   marginBottom: '20px',
 };
 
-
 // check if user is logged in & display accordingly
 const authToken = Cookies.get('authToken');
-console.log()
 // if user is logged in:
 if (authToken) {
   console.log('Authentication Token:', authToken);
@@ -150,45 +148,6 @@ if (authToken) {
     </div>
   );
 }
-
-
-  // return (
-  //   //Placeholder is what is displayed in input before they type
-  //   //Label is the tags displayed ontop of the tags itself
-  //   //Button type = submit it will fire handleSubmit function
-  //   <>
-  //     <form onSubmit={handleSubmit}>
-  //       <label>Email</label>
-  //       <input
-  //         value={email}
-  //         // type="email"
-  //         placeholder="myemail@gmail.com"
-  //         id="email"
-  //         name="email"
-  //         onChange={(e) => setEmail(e.target.value)}
-  //       />
-  //       <label for="password">Password</label>
-  //       <input
-  //         value={pass}
-  //         type="password"
-  //         placeholder="********"
-  //         id="password"
-  //         name="password"
-  //         onChange={(e) => setPass(e.target.value)}
-  //       />
-  //       <label for="password">Password</label>
-  //       <input
-  //         value={matchpass}
-  //         type="password"
-  //         placeholder="********"
-  //         id="password"
-  //         name="password"
-  //         onChange={(e) => setMatchpass(e.target.value)}
-  //       />
-  //       <button type="submit">Register</button>
-  //     </form>
-  //   </>
-  // );
 };
 
 export default Register;
