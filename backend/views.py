@@ -45,7 +45,7 @@ def list_posts_contains(filter_by, key):
         elif filter_by == "meal-period":
             post_query = Post.query.filter_by(meal_period=key)
         else:
-            posts = Post.query
+            post_query = Post.query
         posts = post_query.order_by(Post.timestamp.desc()).all()
         return posts_schema.dump(posts)
     except Exception as e:
