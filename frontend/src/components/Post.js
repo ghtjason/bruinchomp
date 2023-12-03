@@ -2,10 +2,7 @@ import React, { useEffect } from 'react'
 import { Card, Typography, CardContent, Button, Stack, IconButton } from '@mui/material'
 import { useState } from 'react';
 import axios from 'axios'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbUp from '@mui/icons-material/ThumbUp';
 import { auth_token } from '../utils/constants';
 
 const Post = ({post}) => {
