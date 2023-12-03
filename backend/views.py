@@ -34,16 +34,19 @@ def list_posts_contains(filter_by, key):
     try:
         user = User.query.get(get_jwt_identity())
         posts_schema.context = {"user": user}
+        post_query = None
+        key = key.replace("%20", " ")
         if filter_by == "user":
-            posts = Post.query.filter_by(author_username=key).all()
+            post_query = Post.query.filter_by(author_username=key)
         elif filter_by == "title":
-            posts = Post.query.filter_by(title=key).all()
+            post_query = Post.query.filter_by(title=key)
         elif filter_by == "hall":
-            posts = Post.query.filter_by(hall=key).all()
+            post_query = Post.query.filter_by(hall=key)
         elif filter_by == "meal-period":
-            posts = Post.query.filter_by(meal_period=key).all()
+            post_query = Post.query.filter_by(meal_period=key)
         else:
-            posts = Post.query.all()
+            post_query = Post.query
+        posts = post_query.order_by(Post.timestamp.desc()).all()
         return posts_schema.dump(posts)
     except Exception as e:
         return f"error: {e}"
@@ -63,7 +66,7 @@ def search_posts():
         order = url_params.get('order', 'recent')
         post_query = None
         if keyword:
-            keyword = keyword.replace("-", " ")
+            keyword = keyword.replace("%20", " ")
             regex = '\\m' + keyword.lower() + '\\M'
             user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
             content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
@@ -72,16 +75,16 @@ def search_posts():
             meal_posts = Post.query.filter(func.lower(Post.meal_period).op('~')(regex))
             post_query = user_posts.union(content_posts, hall_posts, title_posts, meal_posts)
         if user:
-            user = user.replace("-", " ")
+            user = user.replace("%20", " ")
             post_query = post_query.filter(
                 func.lower(Post.author_username) == user.lower()) if post_query else Post.query.filter(
                 func.lower(Post.author_username) == user.lower())
         if hall:
-            hall = hall.replace("-", " ")
+            hall = hall.replace("%20", " ")
             post_query = post_query.filter(func.lower(Post.hall) == hall.lower()) if post_query else Post.query.filter(
                 func.lower(Post.hall) == hall.lower())
         if meal:
-            meal = meal.replace("-", " ")
+            meal = meal.replace("%20", " ")
             post_query = post_query.filter(
                 func.lower(Post.meal_period) == meal.lower()) if post_query else Post.query.filter(
                 func.lower(Post.meal_period) == meal.lower())

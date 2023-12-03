@@ -1,7 +1,7 @@
 import axios from "axios";
 import { auth_token } from "./constants";
 
-
+// this is only for default case
 export const fetchPosts = async (searchTerm) => {
   let config = {
     method: 'get',

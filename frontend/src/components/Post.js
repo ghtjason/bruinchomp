@@ -50,12 +50,6 @@ const Post = ({post}) => {
         <Typography>{post.content}</Typography>
         <Stack direction="row" mt={1} spacing={1}>
           <Button variant="outlined">Comment</Button>
-          {/* <Button variant="outlined" onClick={likePost}>{post.like_count} Likes</Button>
-          <Button variant="outlined" onClick={unlikePost}>{post.like_count} Likes</Button> */}
-          {/* <IconButton onClick={likePost} color='primary'>
-            <ThumbUpIcon/>
-          </IconButton>
-          <Typography></Typography> */}
           <Button onClick={handleLikeClick} variant={liked ? 'contained' : 'outlined'}>
             <ThumbUpOffAltIcon sx={{marginRight: 1}}/>{count} Likes
           </Button>
