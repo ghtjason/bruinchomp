@@ -11,7 +11,8 @@ const SearchFeed = () => {
   const [searchedPosts, setSearchedPosts] = useState([])
   
   useEffect(() => {
-    const search = () => {
+
+    const search = async () => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -19,15 +20,19 @@ const SearchFeed = () => {
         headers: { 
         }
       };
-      axios.request(config)
+      await axios.request(config)
       .then((response) => {
         if(response.data.length > 0) {
           console.log(response.data)
           setSearchedPosts(response.data)
         }
+        else {
+          setSearchedPosts([])
+        }
       })
       .catch((error) => {
         console.log(error);
+        setSearchedPosts([])
       });
     };
     search();
