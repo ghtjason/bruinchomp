@@ -18,7 +18,7 @@ class Post(db.Model):
     liked_users = db.relationship('User', secondary='post_liked_users', back_populates='liked_posts')
 
     def __repr__(self):
-        return '<Post Title %r>' % self.id
+        return '<Post Title %r>' % self.title
 
 
 class Comment(db.Model):

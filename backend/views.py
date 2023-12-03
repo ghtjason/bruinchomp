@@ -29,8 +29,11 @@ def list_posts():
 
 
 @app.route('/posts/<filter_by>/<key>', methods=['GET'])
+@jwt_required(optional=True)
 def list_posts_contains(filter_by, key):
     try:
+        user = User.query.get(get_jwt_identity())
+        posts_schema.context = {"user": user}
         if filter_by == "user":
             posts = Post.query.filter_by(author_username=key).all()
         elif filter_by == "title":
@@ -45,10 +48,13 @@ def list_posts_contains(filter_by, key):
     except Exception as e:
         return f"error: {e}"
 
-    
+
 @app.route('/posts/search', methods=['GET'])
+@jwt_required(optional=True)
 def search_posts():
     try:
+        user = User.query.get(get_jwt_identity())
+        posts_schema.context = {"user": user}
         url_params = request.args
         keyword = url_params.get('key', None)
         user = url_params.get('user', None)
@@ -58,7 +64,7 @@ def search_posts():
         post_query = None
         if keyword:
             keyword = keyword.replace("-", " ")
-            regex = '\m' + keyword.lower() + '\M'
+            regex = '\\m' + keyword.lower() + '\\M'
             user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
             content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
             hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
@@ -67,17 +73,22 @@ def search_posts():
             post_query = user_posts.union(content_posts, hall_posts, title_posts, meal_posts)
         if user:
             user = user.replace("-", " ")
-            post_query = post_query.filter(func.lower(Post.author_username)==user.lower()) if post_query else Post.query.filter(func.lower(Post.author_username)==user.lower())
+            post_query = post_query.filter(
+                func.lower(Post.author_username) == user.lower()) if post_query else Post.query.filter(
+                func.lower(Post.author_username) == user.lower())
         if hall:
             hall = hall.replace("-", " ")
-            post_query = post_query.filter(func.lower(Post.hall)==hall.lower()) if post_query else Post.query.filter(func.lower(Post.hall)==hall.lower())
+            post_query = post_query.filter(func.lower(Post.hall) == hall.lower()) if post_query else Post.query.filter(
+                func.lower(Post.hall) == hall.lower())
         if meal:
             meal = meal.replace("-", " ")
-            post_query = post_query.filter(func.lower(Post.meal_period)==meal.lower()) if post_query else Post.query.filter(func.lower(Post.meal_period)==meal.lower())
-        if(order == "popular"):
+            post_query = post_query.filter(
+                func.lower(Post.meal_period) == meal.lower()) if post_query else Post.query.filter(
+                func.lower(Post.meal_period) == meal.lower())
+        if order == "popular":
             posts = post_query.all()
             # TODO: come up with a popularity sort
-        elif(order == "relevance"):
+        elif order == "relevance":
             posts = post_query.all()
             # TODO: come up with a relevance sort
         else:
@@ -238,6 +249,18 @@ def register_user():
         db.session.add(user)
         db.session.commit()
         return jsonify({"success": True}), 200
+    except Exception as e:
+        return f"error: {e}"
+
+
+@app.route('/users/', methods=['GET'])
+@jwt_required()
+def get_identity():
+    try:
+        user = User.query.get(get_jwt_identity())
+        if user is None:
+            raise Exception(f'No user found with username \'{username}\'')
+        return user_schema.dump(user)
     except Exception as e:
         return f"error: {e}"
 
