@@ -113,6 +113,7 @@ const Create = () => {
     try {
       console.log(config);
       const response = await axios.request(config);
+      console.log(dininghall);
       console.log(JSON.stringify(response.data));
     } catch (error) {
       if (error.response) {
@@ -157,9 +158,9 @@ const Create = () => {
               label="Dining Hall"
               fullWidth
             >
-              <MenuItem value="Bruin_Plate">Bruin Plate</MenuItem>
+              <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
               <MenuItem value="Epicuria">Epicuria</MenuItem>
-              <MenuItem value="De_Neve">De Neve</MenuItem>
+              <MenuItem value="De Neve">De Neve</MenuItem>
             </Select>
           </FormControl>
         </div>
