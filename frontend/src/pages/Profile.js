@@ -28,8 +28,8 @@ const Profile = () => {
   }, [])
 
   useEffect(() => {
-    fetchPosts('').then(result => {
-      setPosts(result)
+    fetchPosts(username, authToken).then(result => {
+      if(result) setPosts(result);
     })
   }, [])
 
