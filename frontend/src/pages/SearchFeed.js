@@ -21,15 +21,17 @@ const SearchFeed = () => {
       };
       axios.request(config)
       .then((response) => {
-        console.log(response.data)
-        setSearchedPosts(response.data)
+        if(response.data.length > 0) {
+          console.log(response.data)
+          setSearchedPosts(response.data)
+        }
       })
       .catch((error) => {
         console.log(error);
       });
     };
     search();
-  })
+  }, [searchTerm])
  
   return (
     <Stack sx= {{ width: '100vw', mt: 2}}>
@@ -47,7 +49,7 @@ const SearchFeed = () => {
             <div key={posts.id}>
               <Post post={posts}/>
             </div>
-          ))}
+          ))}                 
       </Stack>
 
     </Stack>
