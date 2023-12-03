@@ -26,11 +26,12 @@ import { auth_token } from '../utils/constants';
         };
         try {
             const response = await axios.request(config);
-            setPosts(response.data);
+            if(response.data.length > 0)
+                setPosts(response.data);
         } 
         catch (error) {
           console.log('Error:', error);
-          return '';
+          setPosts([])
         }
       };
       fetchPosts();
