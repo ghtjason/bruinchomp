@@ -13,6 +13,7 @@ posts_schema = PostSchema(many=True)
 comment_schema = CommentSchema()
 comments_schema = CommentSchema(many=True)
 user_schema = UserSchema()
+user_update_schema = UserSchema(dump_only=['username', 'password'])
 image_schema = ImageSchema()
 
 
@@ -256,13 +257,32 @@ def register_user():
         return f"error: {e}"
 
 
+@app.route('/users', methods=['PATCH'])
+@jwt_required()
+def edit_user():
+    try:
+        user = User.query.get(get_jwt_identity())
+        if user is None:
+            raise Exception(f'No user found associated with the provided token')
+        json_data = request.get_json()
+        data = user_update_schema.load(json_data, partial=True)
+        if 'bio' in data:
+            user.bio = data['bio']
+        if 'profile_image_url' in data:
+            user.profile_image_url = data['profile_image_url']
+        db.session.commit()
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return f"error: {e}"
+
+
 @app.route('/users/', methods=['GET'])
 @jwt_required()
 def get_identity():
     try:
         user = User.query.get(get_jwt_identity())
         if user is None:
-            raise Exception(f'No user found with username \'{username}\'')
+            raise Exception(f'No user found associated with the provided token')
         return user_schema.dump(user)
     except Exception as e:
         return f"error: {e}"
