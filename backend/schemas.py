@@ -38,7 +38,6 @@ class CommentSchema(SQLAlchemyAutoSchema):
 
 class UserSchema(SQLAlchemyAutoSchema):
     class Meta:
-        include_fk = True
         model = User
 
     password = auto_field(load_only=True)

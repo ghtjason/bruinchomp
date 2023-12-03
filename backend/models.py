@@ -38,7 +38,7 @@ class User(db.Model):
     username = db.Column(db.String(250), primary_key=True)
     password = db.Column(db.String(250), nullable=False)
     timestamp = db.Column(db.DateTime, server_default=func.now())
-    profile_image_url = db.Column(db.ForeignKey('image.url'), nullable=True)
+    profile_image_url = db.Column(db.ForeignKey('image.url'), server_default='http://res.cloudinary.com/dvyw0j972/image/upload/v1701577834/i7yo9kigukeiiyhivz1e.jpg')
     profile_image = db.relationship('Image', back_populates='users')
     authored_posts = db.relationship('Post', back_populates='author', cascade='all, delete')
     authored_comments = db.relationship('Comment', back_populates='author', cascade='all, delete')

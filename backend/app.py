@@ -41,3 +41,14 @@ from models import *  # for db.create_all()
 with app.app_context():
     # db.drop_all() # uncomment if tables need to be recreated
     db.create_all()
+    url = 'http://res.cloudinary.com/dvyw0j972/image/upload/v1701577834/i7yo9kigukeiiyhivz1e.jpg'
+    if Image.query.get(url) is None:
+        matt = dict()
+        matt['public_id'] = 'i7yo9kigukeiiyhivz1e'
+        matt['url'] = url
+        matt_data = image_schema.load(matt)
+        matt_image = Image(**matt_data)
+        db.session.add(matt_image)
+        db.session.commit()
+
+
