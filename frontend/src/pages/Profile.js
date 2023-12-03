@@ -1,6 +1,5 @@
 import React from 'react'
 import { Stack, Box, Typography, Avatar, Button, Card, CardContent } from '@mui/material'
-import Feed from '../components/Feed'
 import { useState, useEffect } from 'react'
 import { fetchPosts } from '../utils/fetchPosts'
 import Post from '../components/Post'

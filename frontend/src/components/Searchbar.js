@@ -13,8 +13,7 @@ const Searchbar = () => {
       if (e.key === 'Enter') {
           e.preventDefault()
           if(searchTerm) {
-            if(!searchTerm.includes('/')) {
-              console.log('searched in searchbar for: ', searchTerm)
+            if(!searchTerm.includes('/') && !searchTerm.includes('%')) {
               navigate(`/search/${searchTerm}`)
               setError(false)
             }
