@@ -4,7 +4,6 @@ import { useState } from 'react';
 import axios from 'axios'
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import SendIcon from '@mui/icons-material/Send';
-import { auth_token } from '../utils/constants';
 import Cookies from 'js-cookie';
 
 const Post = ({post}) => {
@@ -113,17 +112,16 @@ const Post = ({post}) => {
   }
 
   return (
-    <Card sx={{ width: '50vw', maxWidth: 900, minWidth: 600, boxShadow: 3, border: 1 }}>
+    <Card sx={{ width: '50vw', maxWidth: 900, minWidth: 600, boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
         <Typography>{post.title}</Typography>
-        <Typography>{post.meal_period}</Typography>
-        <Typography>{post.hall}</Typography>
+        <Typography>{post.hall} {post.meal_period}</Typography>
         <Typography>{post.timestamp}</Typography>
       </CardContent>
       <img
         src={post.image_url}
         alt={post.title}
-        style={{width:'50vw', maxWidth: 900, minWidth: 600, maxHeight: 900, minHeight: 600}}
+        style={{width:'50vw', maxWidth: 900, minWidth: 600, maxHeight: 900, minHeight: 300}}
       />
       <CardContent>
         <Typography>{post.author_username}</Typography>
@@ -153,7 +151,7 @@ const Post = ({post}) => {
             <ThumbUpOffAltIcon sx={{marginRight: 1}}/>{count} Likes
           </Button>
           <Button variant="outlined" onClick={getComments}>{commentsShown ? 'hide' : 'show'} comments</Button>
-          <Typography ml={1} color={'red'}>{disabled ? 'Please login to comment or like!' : ''}</Typography>
+          <Typography ml={1} color={'red'}>{disabled ? 'Please log in to like or comment!' : ''}</Typography>
         </Stack>
 
         <Stack mt={1}>
