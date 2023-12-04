@@ -6,10 +6,18 @@ import FilterMenu from '../components/FilterMenu'
 
 import Searchbar from '../components/Searchbar';
 import { dining_hall, meal_period } from '../utils/constants';
+import Cookies from 'js-cookie';
 
 import axios from 'axios';
 
 const Home = () => {
+
+  let authID = ""
+  // fetch posts with authToken if logged in (for likes)
+  const authToken = Cookies.get('authToken');
+  if(authToken) {
+    authID = `Bearer ${authToken}`
+  } 
 
   const [posts, setPosts] = useState([]);
 
@@ -20,6 +28,7 @@ const Home = () => {
         maxBodyLength: Infinity,
         url: 'https://api-m46o.onrender.com/posts',
         headers: { 
+          'Authorization': authID
         }
       };
       try {
@@ -33,7 +42,7 @@ const Home = () => {
       }
     };
     fetchPosts();
-  }, [])
+  }, [authID])
 
   const [categories, setCategories] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(posts);
