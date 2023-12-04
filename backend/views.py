@@ -95,16 +95,16 @@ def search_posts():
                 post_query.all(),
                 key=lambda post: len(post.liked_users),
                 reverse=True
-                )
-        elif order == "relevent":
+            )
+        elif order == "relevant":
             posts = sorted(
                 post_query.all(),
                 key=lambda post: sum(
-                1 for field in [post.content, post.title, post.author_username, post.meal_period, post.hall]
-                for word in field.split() if word.strip(".,!?;:'\"()[]{}").lower() == keyword.lower()
+                    1 for field in [post.content, post.title, post.author_username, post.meal_period, post.hall]
+                    for word in field.split() if word.strip(".,!?;:'\"()[]{}").lower() == keyword.lower()
                 ),
                 reverse=True
-                ) if keyword else post_query.order_by(Post.timestamp.desc()).all()
+            ) if keyword else post_query.order_by(Post.timestamp.desc()).all()
         else:
             posts = post_query.order_by(Post.timestamp.desc()).all()
         return posts_schema.dump(posts)
