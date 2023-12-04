@@ -21,7 +21,6 @@ import { auth_token } from '../utils/constants';
           maxBodyLength: Infinity,
           url: 'https://api-m46o.onrender.com/posts',
           headers: { 
-            'Authorization': auth_token
           }
         };
         try {
@@ -35,7 +34,7 @@ import { auth_token } from '../utils/constants';
         }
       };
       fetchPosts();
-    })
+    }, [])
 
     const [categories, setCategories] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState(posts);
