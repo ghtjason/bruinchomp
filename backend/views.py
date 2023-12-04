@@ -309,17 +309,6 @@ def display_user(username):
         return f"error: {e}"
 
 
-@app.route('/users/<string:username>/image', methods=['GET'])
-def get_profile_pic(username):
-    try:
-        user = User.query.get(username)
-        if user is None:
-            raise Exception(f'No user found with username \'{username}\'')
-        return jsonify(user.profile_image_url)
-    except Exception as e:
-        return f"error: {e}"
-
-
 # login
 @app.route('/login', methods=['POST'])
 def login_user():
