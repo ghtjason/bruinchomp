@@ -229,7 +229,7 @@ def delete_comment(post_id, comment_id):
             raise Exception(f'No comment found with id \'{comment_id}\' in post \'{post_id}\'')
         if comment_to_delete.author_username != get_jwt_identity():
             raise Exception(f'Not authorized to delete comment by \'{comment_to_delete.author_username}\'')
-        db.session.delete(comment_to_delete)  # deletes post inside firebase
+        db.session.delete(comment_to_delete)  # deletes comment
         db.session.commit()
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -276,7 +276,7 @@ def edit_user():
         return f"error: {e}"
 
 
-@app.route('/users/', methods=['GET'])
+@app.route('/users', methods=['GET'])
 @jwt_required()
 def get_identity():
     try:
