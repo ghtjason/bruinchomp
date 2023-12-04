@@ -114,10 +114,6 @@ const Post = ({post}) => {
   return (
     <Card sx={{ width: '50vw', maxWidth: 900, minWidth: 600, boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
-        <img 
-          src={post.author_profile_image_url}
-          alt={`${post.author_username} profile`}
-        />
         <Typography>{post.title}</Typography>
         <Typography>{post.hall} {post.meal_period}</Typography>
         <Typography>{post.timestamp}</Typography>
@@ -128,7 +124,27 @@ const Post = ({post}) => {
         style={{width:'50vw', maxWidth: 900, minWidth: 600, maxHeight: 900, minHeight: 300}}
       />
       <CardContent>
-        <Typography>{post.author_username}</Typography>
+        <Stack direction="row" sx={{alignItems: 'center', mb: 1}}>
+          <Button
+            sx = {{
+              borderRadius: "50%",
+              width: 60,
+              height: 60,
+            }}
+          >
+            <img 
+              src={post.author_profile_image_url}
+              alt={`${post.author_username} profile`}
+              style={{
+                borderRadius: "50%",
+                width: 50,
+                height: 50,
+                display: "block"
+              }}
+            />
+          </Button>
+          <Typography ml={1}>{post.author_username}</Typography>
+        </Stack>
         <Typography>{post.content}</Typography>
 
         <TextField
@@ -161,11 +177,19 @@ const Post = ({post}) => {
         <Stack mt={1}>
           {comments.map((comment) => (
             <div key={comment.id}>
-              <img 
-                src={comment.author_profile_image_url}
-                alt={`${comment.author_username} profile`}
-              />
-              <Typography>{comment.author_username}{comment.id === -1 ? '' : ': '}{comment.content}</Typography>
+              <Stack direction="row">
+                <img 
+                  src={comment.author_profile_image_url}
+                  alt={`${comment.author_username} profile`}
+                  style={{
+                    borderRadius: "50%",
+                    width: 25,
+                    height: 25,
+                    display: "block"
+                  }}
+                />
+                <Typography>{comment.author_username}{comment.id === -1 ? '' : ': '}{comment.content}</Typography>
+              </Stack>
             </div>
           ))}
         </Stack>
