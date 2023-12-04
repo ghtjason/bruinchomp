@@ -114,6 +114,10 @@ const Post = ({post}) => {
   return (
     <Card sx={{ width: '50vw', maxWidth: 900, minWidth: 600, boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
+        <img 
+          src={post.author_profile_image_url}
+          alt={`${post.author_username} profile`}
+        />
         <Typography>{post.title}</Typography>
         <Typography>{post.hall} {post.meal_period}</Typography>
         <Typography>{post.timestamp}</Typography>
@@ -157,7 +161,11 @@ const Post = ({post}) => {
         <Stack mt={1}>
           {comments.map((comment) => (
             <div key={comment.id}>
-              <Typography>{comment.author_username}{comment.id == -1 ? '' : ': '}{comment.content}</Typography>
+              <img 
+                src={comment.author_profile_image_url}
+                alt={`${comment.author_username} profile`}
+              />
+              <Typography>{comment.author_username}{comment.id === -1 ? '' : ': '}{comment.content}</Typography>
             </div>
           ))}
         </Stack>

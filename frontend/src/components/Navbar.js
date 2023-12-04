@@ -33,6 +33,10 @@ const Navbar = () => {
                 }}
                 sx ={{
                   backgroundColor: selectedItem === item.id ? '#dbf0fe' : 'transparent',
+                  borderRadius: 20,
+                  marginLeft: 1.5,
+                  marginRight: 1.5,
+                  marginBottom: 1,
                   '&: hover': {
                     backgroundColor: '#dbf0fe'
                   }

@@ -43,15 +43,15 @@ const Home = () => {
       if (categories.length === 0) {
         setFilteredPosts(posts)
       }
-      else {
+      else {  
         const filteredPosts = posts.filter((post) => {
           let onlyDiningHalls = true
           let onlyMealPeriods = true
-          for (var item in categories) {
-            if(dining_hall.includes(item)) {
+          for (var i in categories) {
+            if(dining_hall.includes(categories[i])) {
               onlyMealPeriods = false
             }
-            if(meal_period.includes(item)) {
+            if(meal_period.includes(categories[i])) {
               onlyDiningHalls = false
             }
           }
