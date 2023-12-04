@@ -65,7 +65,7 @@ def search_posts():
         hall = url_params.get('hall', None)
         meal = url_params.get('meal', None)
         order = url_params.get('order', 'recent')
-        post_query = None
+        post_query = Post.query
         if keyword:
             keyword = keyword.replace("%20", " ")
             regex = '\\m' + keyword.lower() + '\\M'
@@ -82,7 +82,8 @@ def search_posts():
                 func.lower(Post.author_username) == user.lower())
         if hall:
             hall = hall.replace("%20", " ")
-            post_query = post_query.filter(func.lower(Post.hall) == hall.lower()) if post_query else Post.query.filter(
+            post_query = post_query.filter(
+                func.lower(Post.hall) == hall.lower()) if post_query else Post.query.filter(
                 func.lower(Post.hall) == hall.lower())
         if meal:
             meal = meal.replace("%20", " ")
@@ -90,11 +91,20 @@ def search_posts():
                 func.lower(Post.meal_period) == meal.lower()) if post_query else Post.query.filter(
                 func.lower(Post.meal_period) == meal.lower())
         if order == "popular":
-            posts = post_query.all()
-            # TODO: come up with a popularity sort
-        elif order == "relevance":
-            posts = post_query.all()
-            # TODO: come up with a relevance sort
+            posts = sorted(
+                post_query.all(),
+                key=lambda post: len(post.liked_users),
+                reverse=True
+            )
+        elif order == "relevant":
+            posts = sorted(
+                post_query.all(),
+                key=lambda post: sum(
+                    1 for field in [post.content, post.title, post.author_username, post.meal_period, post.hall]
+                    for word in field.split() if word.strip(".,!?;:'\"()[]{}").lower() == keyword.lower()
+                ),
+                reverse=True
+            ) if keyword else post_query.order_by(Post.timestamp.desc()).all()
         else:
             posts = post_query.order_by(Post.timestamp.desc()).all()
         return posts_schema.dump(posts)

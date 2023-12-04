@@ -16,6 +16,7 @@ class PostSchema(SQLAlchemyAutoSchema):
     meal_period = auto_field(validate=validate.OneOf(MEAL_PERIODS))
     like_count = fields.Method('get_like_count')
     is_liked = fields.Method('get_is_liked')
+    author_profile_image_url = fields.Method('get_profile_image_url')
 
     @staticmethod
     def get_like_count(obj):
@@ -26,6 +27,10 @@ class PostSchema(SQLAlchemyAutoSchema):
             return False
         return self.context["user"] in obj.liked_users
 
+    @staticmethod
+    def get_profile_image_url(obj):
+        return obj.author.profile_image_url
+
 
 class CommentSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -34,6 +39,11 @@ class CommentSchema(SQLAlchemyAutoSchema):
 
     parent_post_id = auto_field(dump_only=True)
     author_username = auto_field(dump_only=True)
+    author_profile_image_url = fields.Method('get_profile_image_url')
+
+    @staticmethod
+    def get_profile_image_url(obj):
+        return obj.author.profile_image_url
 
 
 class UserSchema(SQLAlchemyAutoSchema):
