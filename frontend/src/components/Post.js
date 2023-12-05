@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
-import { Card, Typography, CardContent, Button, Stack, IconButton, TextField, InputAdornment } from '@mui/material'
+import { Card, Typography, CardContent, Button, Stack, IconButton, TextField, InputAdornment, Chip } from '@mui/material'
 import { useState } from 'react';
 import axios from 'axios'
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SendIcon from '@mui/icons-material/Send';
 import Cookies from 'js-cookie';
 
@@ -13,6 +15,7 @@ const Post = ({post}) => {
   const [comments, setComments] = useState([]);
   const [commentsShown, setCommentsShown] = useState(false)
   const [commentText, setCommentText] = useState('');
+  const [commentSuccess, setCommentSuccess] = useState(false)
   let disabled = true;
 
   // can't like or comment when not logged in
@@ -74,8 +77,13 @@ const Post = ({post}) => {
     };
     
     axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
+    .then(() => {
+      setCommentSuccess(true)
+      const timeoutId = setTimeout(() => {
+        setCommentSuccess(false);
+        }, 5000);
+
+        return () => clearTimeout(timeoutId);
     })
     .catch((error) => {
       console.log(error);
@@ -114,9 +122,14 @@ const Post = ({post}) => {
   return (
     <Card sx={{ width: '50vw', maxWidth: 900, minWidth: 600, boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
-        <Typography>{post.title}</Typography>
-        <Typography>{post.hall} {post.meal_period}</Typography>
-        <Typography>{post.timestamp}</Typography>
+        <Stack direction="row" sx={{justifyContent: 'space-between', mr: 1}}>
+          <Typography sx={{fontWeight: 'bold', fontSize: '24px'}}>{post.title}</Typography>
+          <Typography sx={{fontWeight: 'bold', fontSize: '18px'}}>{post.timestamp.slice(0, 10)}</Typography>
+        </Stack>
+        <Stack direction="row" spacing={1} sx={{mt: 1, mb: 1}}>
+          <Chip icon={<LocationOnIcon/>} label={post.hall}/>
+          <Chip icon={<AccessTimeIcon/>} label={post.meal_period}/>
+        </Stack>
       </CardContent>
       <img
         src={post.image_url}
@@ -143,9 +156,9 @@ const Post = ({post}) => {
               }}
             />
           </Button>
-          <Typography ml={1}>{post.author_username}</Typography>
+          <Typography ml={1} sx = {{fontWeight: 'bold', fontSize: '20px'}}>{post.author_username}</Typography>
         </Stack>
-        <Typography>{post.content}</Typography>
+        <Typography sx={{fontSize: '16px'}}>{post.content}</Typography>
 
         <TextField
           id="add comment"
@@ -172,6 +185,7 @@ const Post = ({post}) => {
           </Button>
           <Button variant="outlined" onClick={getComments}>{commentsShown ? 'hide' : 'show'} comments</Button>
           <Typography ml={1} color={'red'}>{disabled ? 'Please log in to like or comment!' : ''}</Typography>
+          <Typography ml={1} color={'green'}>{commentSuccess ? 'Success!' : ''} </Typography>
         </Stack>
 
         <Stack mt={1}>

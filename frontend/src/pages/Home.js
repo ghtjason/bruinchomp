@@ -1,6 +1,6 @@
 import React from 'react';
 import Post from '../components/Post';
-import { Box, Stack, Button, Menu, MenuItem } from '@mui/material'
+import { Box, Stack, Button, Menu, MenuItem, Typography } from '@mui/material'
 import { useState, useEffect } from "react";
 import FilterMenu from '../components/FilterMenu'
 
@@ -20,6 +20,7 @@ const Home = () => {
   } 
 
   const [posts, setPosts] = useState([]);
+  const [loaded, setLoaded] = useState('Loading posts...')
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -35,6 +36,7 @@ const Home = () => {
           const response = await axios.request(config);
           if(response.data.length > 0)
               setPosts(response.data);
+          setLoaded('')
       } 
       catch (error) {
         console.log('Error:', error);
@@ -87,7 +89,7 @@ const Home = () => {
           <FilterMenu categories={categories} setCategories={setCategories}/>
           <Searchbar/>
         </Stack>
-
+        <Typography sx={{fontWeight: 'bold', fontSize: '28px'}}>{loaded}</Typography>
         <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>
           {filteredPosts.map((posts) => (
             <div key={posts.id}>
