@@ -60,7 +60,14 @@ const Register = () => {
           console.log(JSON.stringify(response.data)); // success?
           navigate("/login");
         } else {
-          setMessage("Account with username already exists");
+          if (response.data.includes('One or more of the choices')) {
+            setMessage("Username must not include spaces");
+          }
+          else if (response.data.includes('Length must be')) {
+            setMessage("Username length must be between 1 and 20");
+          }
+          else
+            setMessage("Account with username already exists");
           console.log(JSON.stringify(response.data));
         }
       })
