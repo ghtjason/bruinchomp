@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../index.css";
 import axios from "axios";
 import { auth_token } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   TextField,
@@ -10,6 +11,8 @@ import {
   MenuItem,
   InputLabel,
   Typography,
+  Card,
+  CardContent,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Cookies from "js-cookie"; // cookiessssss
@@ -24,6 +27,7 @@ const Create = () => {
   const [image_url, setImage_url] = useState("");
 
   const authToken = Cookies.get("authToken");
+  const navigate = useNavigate();
 
   const uploadImage = async (e) => {
     //Process image url first
@@ -136,84 +140,86 @@ const Create = () => {
       }
       console.log("Error config:", error.config);
     }
+    setTitle("");
+    setImage("");
+    setDininghall("");
+    setMealperiod("");
+    setBody("");
+
+    navigate("/home");
   };
   if (authToken) {
     return (
-      <div className="createPost">
-        <h2>{errorMsg}</h2>
-        <h2>Create new post</h2>
-        <form className="createForm">
-          <div className="formGroup">
-            <label>Post title</label>
-            <TextField
-              type="text"
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              fullWidth
-            />
-          </div>
-          <div className="formGroup">
-            <FormControl>
-              <InputLabel id="dining Hall">Post Category</InputLabel>
-              <Select
-                labelID="dining hall"
-                value={dininghall}
-                onChange={(e) => setDininghall(e.target.value)}
-                label="Dining Hall"
+      <Card>
+        <div className="createPost">
+          <h2>Create new post</h2>
+          <h2>{errorMsg}</h2>
+          <form className="createForm">
+            <div className="formGroup">
+              <label>Post title</label>
+              <TextField
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 fullWidth
-              >
-                <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
-                <MenuItem value="Epicuria">Epicuria</MenuItem>
-                <MenuItem value="De Neve">De Neve</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div className="formGroup">
-            <FormControl>
-              <InputLabel id="Category">Meal Period</InputLabel>
-              <Select
-                value={mealPeriod}
-                onChange={(e) => setMealperiod(e.target.value)}
-              >
-                <MenuItem value="Breakfast">Breakfast</MenuItem>
-                <MenuItem value="Lunch">Lunch</MenuItem>
-                <MenuItem value="Dinner">Dinner</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div className="formGroup">
-            <label>Post body</label>
-            <textarea
-              type="text"
-              required
-              value={body}
-              fullWidth
-              onChange={(e) => setBody(e.target.value)}
-            ></textarea>
-          </div>
-          <div className="formGroup">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                setImage(e.target.files[0]);
-                uploadImage(e);
-              }}
-            />
-            <Button
-              component="label"
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload image
-            </Button>
-          </div>
-        </form>
-        <Button variant="outlined" onClick={handleSubmit}>
-          Add Post
-        </Button>
-      </div>
+              />
+            </div>
+            <div className="formGroup">
+              <FormControl>
+                <InputLabel id="dining Hall">Post Category</InputLabel>
+                <Select
+                  labelID="dining hall"
+                  value={dininghall}
+                  onChange={(e) => setDininghall(e.target.value)}
+                  label="Dining Hall"
+                  fullWidth
+                >
+                  <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
+                  <MenuItem value="Epicuria">Epicuria</MenuItem>
+                  <MenuItem value="De Neve">De Neve</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div className="formGroup">
+              <FormControl>
+                <InputLabel id="Category">Meal Period</InputLabel>
+                <Select
+                  value={mealPeriod}
+                  onChange={(e) => setMealperiod(e.target.value)}
+                >
+                  <MenuItem value="Breakfast">Breakfast</MenuItem>
+                  <MenuItem value="Lunch">Lunch</MenuItem>
+                  <MenuItem value="Dinner">Dinner</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div className="formGroup">
+              <label>Post body</label>
+              <textarea
+                type="text"
+                required
+                value={body}
+                fullWidth
+                onChange={(e) => setBody(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="formGroup">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  uploadImage(e);
+                }}
+              />
+            </div>
+          </form>
+          <Button variant="outlined" onClick={handleSubmit}>
+            Add Post
+          </Button>
+        </div>
+      </Card>
     );
   } else {
     return <Typography>Please log in first!</Typography>;
