@@ -60,3 +60,11 @@ class ImageSchema(SQLAlchemyAutoSchema):
         unknown = EXCLUDE
 
     public_id = auto_field(load_only=True)
+
+
+class MessageSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        include_fk = True
+        model = Message
+
+    sender_username = auto_field(dump_only=True)

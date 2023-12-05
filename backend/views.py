@@ -15,6 +15,8 @@ comments_schema = CommentSchema(many=True)
 user_schema = UserSchema()
 user_update_schema = UserSchema(dump_only=['username', 'password'])
 image_schema = ImageSchema()
+message_schema = MessageSchema()
+messages_schema = MessageSchema(many=True)
 
 
 @app.route('/posts', methods=['GET'])
@@ -326,6 +328,37 @@ def login_user():
             raise Exception(f'Incorrect password for user \'{username}\'')
         access_token = create_access_token(identity=username)
         return jsonify(access_token=access_token), 200
+    except Exception as e:
+        return f"error: {e}"
+
+
+@app.route('/messages', methods=['GET'])
+@jwt_required()
+def get_messages():
+    try:
+        user = User.query.get(get_jwt_identity())
+        messages = user.received_msgs
+        return messages_schema.dump(messages)
+    except Exception as e:
+        return f"error: {e}"
+
+
+@app.route('/messages', methods=['POST'])
+@jwt_required()
+def create_message():
+    try:
+        json_data = request.get_json()
+        data = message_schema.load(json_data)
+        data['sender_username'] = get_jwt_identity()
+        recipient_exists = db.session.query(db.exists().where(User.username == data['recipient_username'])).scalar()
+        if not recipient_exists:
+            raise Exception(f'No recipient found with username \'{data['recipient_username']}\'')
+        if data['sender_username'] == data['recipient_username']:
+            raise Exception(f'Cannot send message to self')
+        message = Message(**data)
+        db.session.add(message)
+        db.session.commit()
+        return jsonify({"success": True}), 200
     except Exception as e:
         return f"error: {e}"
 

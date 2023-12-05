@@ -38,12 +38,15 @@ class User(db.Model):
     username = db.Column(db.String(250), primary_key=True)
     password = db.Column(db.String(250), nullable=False)
     timestamp = db.Column(db.DateTime, server_default=func.now())
-    profile_image_url = db.Column(db.ForeignKey('image.url'), server_default='http://res.cloudinary.com/dvyw0j972/image/upload/v1701577834/i7yo9kigukeiiyhivz1e.jpg')
+    profile_image_url = db.Column(db.ForeignKey('image.url'),
+                                  server_default='http://res.cloudinary.com/dvyw0j972/image/upload/v1701577834/i7yo9kigukeiiyhivz1e.jpg')
     profile_image = db.relationship('Image', back_populates='users')
     authored_posts = db.relationship('Post', back_populates='author', cascade='all, delete')
     authored_comments = db.relationship('Comment', back_populates='author', cascade='all, delete')
     liked_posts = db.relationship('Post', secondary='post_liked_users', back_populates='liked_users')
     bio = db.Column(db.String, nullable=True)
+    sent_msgs = db.relationship('Message', foreign_keys='Message.sender_username', back_populates='sender')
+    received_msgs = db.relationship('Message', foreign_keys='Message.recipient_username', back_populates='recipient')
 
 
 class Image(db.Model):
@@ -51,6 +54,16 @@ class Image(db.Model):
     public_id = db.Column(db.String, nullable=False)
     posts = db.relationship('Post', back_populates='image')
     users = db.relationship('User', back_populates='profile_image')
+
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, server_default=func.now())
+    sender_username = db.Column(db.ForeignKey('user.username'), nullable=False)
+    sender = db.relationship('User', back_populates='sent_msgs', foreign_keys=[sender_username])
+    recipient_username = db.Column(db.ForeignKey('user.username'), nullable=False)
+    recipient = db.relationship('User', back_populates='received_msgs', foreign_keys=[recipient_username])
+    content = db.Column(db.String, nullable=False)
 
 
 post_liked_users = db.Table(
