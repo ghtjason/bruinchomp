@@ -63,7 +63,7 @@ const Navbar = () => {
             variant = "contained"
             component = {Link}
             to = "/create"
-            sx = {{borderRadius: 5, width: '12vw', maxWidth: '150px', minWidth: '120px'}}
+            sx = {{borderRadius: 5, width: '15vw', maxWidth: '150px', minWidth: '120px'}}
             startIcon = {<AddIcon />}
           >
             <Typography sx= {{fontSize: '18px', fontWeight: '600'}}> Create </Typography>

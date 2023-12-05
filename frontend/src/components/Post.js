@@ -185,7 +185,7 @@ const Post = ({post}) => {
                     borderRadius: "50%",
                     width: 25,
                     height: 25,
-                    display: "block"
+                    display: comment.id === -1 ? "none" : "block"
                   }}
                 />
                 <Typography>{comment.author_username}{comment.id === -1 ? '' : ': '}{comment.content}</Typography>

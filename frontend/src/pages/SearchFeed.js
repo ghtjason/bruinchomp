@@ -6,24 +6,23 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const SearchFeed = () => {
+const SearchFeed = ({key, term}) => {
   const {searchTerm} = useParams();
   const [searchedPosts, setSearchedPosts] = useState([])
-  
+
   useEffect(() => {
 
     const search = async () => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `https://api-m46o.onrender.com/posts/search?key=${searchTerm}`,
+        url: `https://api-m46o.onrender.com/posts/search?${searchTerm}`,
         headers: { 
         }
       };
       await axios.request(config)
       .then((response) => {
         if(response.data.length > 0) {
-          console.log(response.data)
           setSearchedPosts(response.data)
         }
         else {
@@ -42,7 +41,7 @@ const SearchFeed = () => {
     <Stack sx= {{ width: '100vw', mt: 2}}>
       <Stack direction="row" sx={{justifyContent: 'space-between', mr: 10, ml: 5}}> 
         <Typography mb={2} variant="h5" fontWeight={"bold"}>
-          Showing search results for <span style ={{color:'#FF0000'}}>{searchTerm}</span>:
+          Showing search results for <span style ={{color:'#FF0000'}}>{searchTerm ? searchTerm.replace('=', ': ') : ''}</span>
         </Typography>
         <Box>
           <Searchbar/>
