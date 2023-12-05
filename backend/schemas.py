@@ -51,6 +51,7 @@ class UserSchema(SQLAlchemyAutoSchema):
         include_fk = True
         model = User
 
+    username = auto_field(validate=[validate.ContainsNoneOf(' '), validate.Length(1, 20)])
     password = auto_field(load_only=True)
 
 
