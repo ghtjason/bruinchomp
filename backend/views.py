@@ -22,6 +22,7 @@ image_schema = ImageSchema()
 def list_posts():
     try:
         posts = Post.query.all()
+        posts.reverse()
         user = User.query.get(get_jwt_identity())
         posts_schema.context = {"user": user}
         return posts_schema.dump(posts)
