@@ -68,10 +68,17 @@ def search_posts():
         hall = url_params.get('hall', None)
         meal = url_params.get('meal', None)
         order = url_params.get('order', 'recent')
+        match_search = url_params.get('match', None)
         post_query = Post.query
         if keyword:
             keyword = keyword.replace("%20", " ")
-            regex = '\\m' + keyword.lower() + '\\M'
+            regex = ""
+            if(match_search == "contains"):
+                regex = keyword.lower()
+            elif(match_search == "starts"):
+                regex = '\\m' + keyword.lower()
+            else:
+                regex = '\\m' + keyword.lower() + '\\M'
             user_posts = Post.query.filter(func.lower(Post.author_username).op('~')(regex))
             content_posts = Post.query.filter(func.lower(Post.content).op('~')(regex))
             hall_posts = Post.query.filter(func.lower(Post.hall).op('~')(regex))
