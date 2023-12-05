@@ -9,8 +9,10 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Cookies from "js-cookie"; // cookiessssss
 
 const Create = () => {
   const [title, setTitle] = useState("");
@@ -20,6 +22,8 @@ const Create = () => {
   const [mealPeriod, setMealperiod] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [image_url, setImage_url] = useState("");
+
+  const authToken = Cookies.get("authToken");
 
   const uploadImage = async (e) => {
     //Process image url first
@@ -38,7 +42,7 @@ const Create = () => {
       method: "post",
       url: "https://api-m46o.onrender.com/image",
       headers: {
-        Authorization: auth_token,
+        Authorization: `Bearer ${authToken}`,
       },
       data: data,
     };
@@ -68,6 +72,7 @@ const Create = () => {
   };
 
   const handleSubmit = async (e) => {
+    const authToken = Cookies.get("authToken");
     e.preventDefault();
 
     if (!mealPeriod) {
@@ -105,7 +110,7 @@ const Create = () => {
       url: "https://api-m46o.onrender.com/posts",
       headers: {
         "Content-Type": "application/json",
-        Authorization: auth_token,
+        Authorization: `Bearer ${authToken}`,
       },
       data: data,
     };
@@ -132,84 +137,87 @@ const Create = () => {
       console.log("Error config:", error.config);
     }
   };
-
-  return (
-    <div className="createPost">
-      <h2>{errorMsg}</h2>
-      <h2>Create new post</h2>
-      <form className="createForm">
-        <div className="formGroup">
-          <label>Post title</label>
-          <TextField
-            type="text"
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            fullWidth
-          />
-        </div>
-        <div className="formGroup">
-          <FormControl>
-            <InputLabel id="dining Hall">Post Category</InputLabel>
-            <Select
-              labelID="dining hall"
-              value={dininghall}
-              onChange={(e) => setDininghall(e.target.value)}
-              label="Dining Hall"
+  if (authToken) {
+    return (
+      <div className="createPost">
+        <h2>{errorMsg}</h2>
+        <h2>Create new post</h2>
+        <form className="createForm">
+          <div className="formGroup">
+            <label>Post title</label>
+            <TextField
+              type="text"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               fullWidth
+            />
+          </div>
+          <div className="formGroup">
+            <FormControl>
+              <InputLabel id="dining Hall">Post Category</InputLabel>
+              <Select
+                labelID="dining hall"
+                value={dininghall}
+                onChange={(e) => setDininghall(e.target.value)}
+                label="Dining Hall"
+                fullWidth
+              >
+                <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
+                <MenuItem value="Epicuria">Epicuria</MenuItem>
+                <MenuItem value="De Neve">De Neve</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="formGroup">
+            <FormControl>
+              <InputLabel id="Category">Meal Period</InputLabel>
+              <Select
+                value={mealPeriod}
+                onChange={(e) => setMealperiod(e.target.value)}
+              >
+                <MenuItem value="Breakfast">Breakfast</MenuItem>
+                <MenuItem value="Lunch">Lunch</MenuItem>
+                <MenuItem value="Dinner">Dinner</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="formGroup">
+            <label>Post body</label>
+            <textarea
+              type="text"
+              required
+              value={body}
+              fullWidth
+              onChange={(e) => setBody(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="formGroup">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+                uploadImage(e);
+              }}
+            />
+            <Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
             >
-              <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
-              <MenuItem value="Epicuria">Epicuria</MenuItem>
-              <MenuItem value="De Neve">De Neve</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="formGroup">
-          <FormControl>
-            <InputLabel id="Category">Meal Period</InputLabel>
-            <Select
-              value={mealPeriod}
-              onChange={(e) => setMealperiod(e.target.value)}
-            >
-              <MenuItem value="Breakfast">Breakfast</MenuItem>
-              <MenuItem value="Lunch">Lunch</MenuItem>
-              <MenuItem value="Dinner">Dinner</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="formGroup">
-          <label>Post body</label>
-          <textarea
-            type="text"
-            required
-            value={body}
-            fullWidth
-            onChange={(e) => setBody(e.target.value)}
-          ></textarea>
-        </div>
-        <div className="formGroup">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              setImage(e.target.files[0]);
-              uploadImage(e);
-            }}
-          />
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload image
-          </Button>
-        </div>
-      </form>
-      <Button variant="outlined" onClick={handleSubmit}>
-        Add Post
-      </Button>
-    </div>
-  );
+              Upload image
+            </Button>
+          </div>
+        </form>
+        <Button variant="outlined" onClick={handleSubmit}>
+          Add Post
+        </Button>
+      </div>
+    );
+  } else {
+    return <Typography>Please log in first!</Typography>;
+  }
 };
 
 export default Create;
