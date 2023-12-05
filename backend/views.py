@@ -349,11 +349,13 @@ def create_message():
     try:
         json_data = request.get_json()
         data = message_schema.load(json_data)
-        data['sender_username'] = get_jwt_identity()
-        recipient_exists = db.session.query(db.exists().where(User.username == data['recipient_username'])).scalar()
+        sender_username = get_jwt_identity()
+        recipient_username = data['recipient_username']
+        data['sender_username'] = sender_username
+        recipient_exists = db.session.query(db.exists().where(User.username == recipient_username)).scalar()
         if not recipient_exists:
-            raise Exception(f'No recipient found with username \'{data['recipient_username']}\'')
-        if data['sender_username'] == data['recipient_username']:
+            raise Exception(f'No recipient found with username \'{recipient_username}\'')
+        if sender_username == recipient_username:
             raise Exception(f'Cannot send message to self')
         message = Message(**data)
         db.session.add(message)
