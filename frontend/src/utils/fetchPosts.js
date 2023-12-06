@@ -1,22 +1,22 @@
 import axios from "axios";
+import { fetchUserInfo } from '../utils/fetchUserInfo'
 
-// this is only for default case
 export const fetchPosts = async (username, authToken) => {
   let config = {
     method: 'get',
-    maxBodyLength: Infinity,
     url: 'https://api-m46o.onrender.com/posts/user/' + username,
     headers: { 
-      'ngrok-skip-browser-warning': 'true',
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + authToken
     }
   };
+  console.log(config.url);
   try {
     const response = await axios.request(config);
     return response.data;
   }
   catch (error) {
     console.log('Error:', error);
-    return '';
-  }
+    return false;
+  } 
 };

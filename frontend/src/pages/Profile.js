@@ -6,18 +6,18 @@ import { fetchUserInfo } from '../utils/fetchUserInfo'
 import Post from '../components/Post'
 import Cookies from 'js-cookie'; // cookiessssss
 
+// function to check if username is found yet. If so, it sets posts.
+
 const Profile = () => {
   const authToken = Cookies.get('authToken');
   let loggedIn = false;
-  let userInfo;
+  let userPosts;
 
   // if logged in, fetch posts & user info
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [username, setUsername] = useState([]);
   if (authToken) {
-    userInfo = fetchUserInfo(authToken);
     loggedIn = true;
-    console.log(userInfo.username);
   }
   useEffect(() => {
     if(loggedIn) {
@@ -27,14 +27,21 @@ const Profile = () => {
     }
   }, [])
 
-  useEffect(() => {
-    fetchPosts(username, authToken).then(result => {
-      if(result) setPosts(result);
-    })
-  }, [])
+  // this function assigns posts only once username is found & runs until username is found & posts is assigned
+  function checkAndExecute() {
+    if (username != '') {
+      console.log("username found: " + username);
+      fetchPosts(username, authToken).then(result => {
+        console.log(result);
+        if(result) setPosts(result);
+      })
+    } else {
+      setTimeout(checkAndExecute, 100); // check again after 100 milliseconds
+    }
+  }
 
+  if(posts == null) checkAndExecute();
 
-  //search for user later
   
 
 
@@ -86,7 +93,7 @@ const Profile = () => {
               <Button variant="outlined" color="primary">Edit Profile</Button>
             </div>
 
-            <Typography variant="body1">Posts: 10</Typography>
+            <Typography variant="body1">Posts: {posts ? posts.length : 0}</Typography> {/* POST COUNT */}
 
             <Typography variant="body2" style={profileStyles.bio}>
               this is a bio.
@@ -99,11 +106,14 @@ const Profile = () => {
         {/* POSTS */}
           <div className="Posts">
             <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>
-              {posts.map((posts) => (
+              <Typography>
+                {(!posts ? 'No Posts Yet!' : '')}
+              </Typography>
+              {(posts ? (posts.map((posts) => (
                 <div key={posts.id}>
                   <Post post={posts}/>
                 </div>
-              ))}
+              ))) : '')}
             </Stack>
           </div>
         </Stack>
