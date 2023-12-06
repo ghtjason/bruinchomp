@@ -26,6 +26,7 @@ const Create = () => {
   const [mealPeriod, setMealperiod] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [image_url, setImage_url] = useState("");
+  console.log(image);
 
   const authToken = Cookies.get("authToken");
   const navigate = useNavigate();
@@ -165,7 +166,6 @@ const Create = () => {
                 accept="image/*"
                 onChange={(e) => {
                   setImage(e.target.files[0]);
-                  uploadImage(e, image, authToken, setImage_url, setErrorMsg);
                 }}
               />
             </div>

@@ -6,6 +6,7 @@ import { fetchUserInfo } from '../utils/fetchUserInfo'
 import Post from '../components/Post'
 import Cookies from 'js-cookie'; // cookiessssss
 import axios from "axios";
+import { uploadImage } from '../utils/uploadImage'
 
 // function to check if username is found yet. If so, it sets posts.
 const Profile = () => {
@@ -16,47 +17,48 @@ const Profile = () => {
   const [posts, setPosts] = useState(null);
   const [username, setUsername] = useState([]);
   const [bio, setBio] = useState('');
+  const [image, setImage] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [pfpEdited, setPfpEdited] = useState(false);
   const [pfp_url, setPfp_url] = useState("");
   const [editMode, setEditMode] = useState(false);
 
+  const initializeProfile = async (e) => {
+    await fetchUserInfo(authToken).then(result => {
+      setUsername(result.username)
+      setBio(result.bio)
+      setPfp_url(result.profile_image_url)
+      console.log(result.profile_image_url)
+    })
+    fetchPosts(username, authToken).then(result => {
+      if(result) setPosts(result);
+    })
+  }
+
   if (authToken) {
     loggedIn = true;
-  }
-  useEffect(() => {
-    if(loggedIn) {
-      fetchUserInfo(authToken).then(result => {
-        setUsername(result.username)
-        setBio(result.bio)
-        setPfp_url(result.profile_image_url)
-      })
-    }
-  }, [])
-
-  // this function assigns posts only once username is found & runs until username is found & posts is assigned
-  function checkAndExecute() {
-    if (username != '') {
-      console.log("username found: " + username);
-      fetchPosts(username, authToken).then(result => {
-        console.log(result);
-        if(result) setPosts(result);
-      })
-    } else {
-      setTimeout(checkAndExecute, 100); // check again after 100 milliseconds
-    }
+    if(posts == null) initializeProfile();
   }
 
-  if(posts == null) checkAndExecute();
-
-  const handleEdit = (event) => {
+  const handleEdit = (e) => {
     // Update the bio as the user types
-    setBio(event.target.value);
+    setBio(e.target.value);
   };
 
   const updateProfile = async (e) => {
-    let data = JSON.stringify({
-      "bio": bio
-    });
-
+    let data;
+    if(pfpEdited) {
+      const uploadedImageUrl = await uploadImage(e, image, authToken, setPfp_url, setErrorMsg);
+      data = JSON.stringify({
+        "profile_image_url": uploadedImageUrl,
+        "bio": bio
+      });
+    }
+    else {
+      data = JSON.stringify({
+        "bio": bio
+      });
+    }
     let config = {
       method: "PATCH",
       url: "https://api-m46o.onrender.com/users",
@@ -66,7 +68,6 @@ const Profile = () => {
       },
       data: data,
     };
-
     await axios.request(config) // await for request to send
     window.location.reload(); // reload the page
   }
@@ -81,6 +82,7 @@ const Profile = () => {
       height: '200px',
     },
     avatarContainer: {
+      width: '20%',
       height: '100%',
       alignItems: 'center',
       paddingLeft: '16px',
@@ -106,8 +108,6 @@ const Profile = () => {
       width: '200%',
     }
   };
-
-  console.log(editMode)
 
   // return
   let pageContent;
@@ -155,14 +155,14 @@ const Profile = () => {
             <Card style={profileStyles.profileCard}>
               <div style={profileStyles.avatarContainer}>
                 <Avatar alt="Placeholder" src={pfp_url} style={profileStyles.avatar} /> 
-                <div className="formGroup">
+                <div className="formGroup" style={{width: '10%'}}>
                   <input
                     type="file"
                     accept="image/*"
-                    // onChange={(e) => {
-                    //   setImage(e.target.files[0]);
-                    //   uploadImage(e, image, authToken, setImage_url, setErrorMsg);
-                    // }}
+                    onChange={(e) => {
+                      if(!image) setImage(e.target.files[0])
+                      setPfpEdited(true)
+                    }}
                   />
                 </div>
               </div>
