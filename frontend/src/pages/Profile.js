@@ -16,6 +16,7 @@ const Profile = () => {
   const [posts, setPosts] = useState(null);
   const [username, setUsername] = useState([]);
   const [bio, setBio] = useState('');
+  const [pfp_url, setPfp_url] = useState("");
   const [editMode, setEditMode] = useState(false);
 
   if (authToken) {
@@ -26,6 +27,7 @@ const Profile = () => {
       fetchUserInfo(authToken).then(result => {
         setUsername(result.username)
         setBio(result.bio)
+        setPfp_url(result.profile_image_url)
       })
     }
   }, [])
@@ -115,7 +117,7 @@ const Profile = () => {
         <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
             <Card style={profileStyles.profileCard}>
               <div style={profileStyles.avatarContainer}>
-                <Avatar alt="Placeholder" src="path_to_pfp.jpg" style={profileStyles.avatar} /> 
+                <Avatar alt="Placeholder" src={pfp_url} style={profileStyles.avatar} /> 
               </div>
 
               <CardContent>
@@ -152,7 +154,17 @@ const Profile = () => {
         <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
             <Card style={profileStyles.profileCard}>
               <div style={profileStyles.avatarContainer}>
-                <Avatar alt="Placeholder" src="path_to_pfp.jpg" style={profileStyles.avatar} /> 
+                <Avatar alt="Placeholder" src={pfp_url} style={profileStyles.avatar} /> 
+                <div className="formGroup">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    // onChange={(e) => {
+                    //   setImage(e.target.files[0]);
+                    //   uploadImage(e, image, authToken, setImage_url, setErrorMsg);
+                    // }}
+                  />
+                </div>
               </div>
 
               <CardContent>
