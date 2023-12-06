@@ -35,16 +35,16 @@ const Create = () => {
     const authToken = Cookies.get("authToken");
     e.preventDefault();
 
-    if (!mealPeriod) {
-      setErrorMsg("Meal Period Field is required");
-      return;
-    }
     if (!title) {
       setErrorMsg("Title Field is required");
       return;
     }
     if (!dininghall) {
       setErrorMsg("Dining hall is required");
+      return;
+    }
+    if (!mealPeriod) {
+      setErrorMsg("Meal Period Field is required");
       return;
     }
     if (!body) {
@@ -101,18 +101,17 @@ const Create = () => {
     setDininghall("");
     setMealperiod("");
     setBody("");
-
     navigate("/home");
   };
   if (authToken) {
     return (
       <Card>
         <div className="createPost">
-          <h2>Create new post</h2>
-          <h2>{errorMsg}</h2>
+          <Typography sx={{fontWeight: 'bold', fontSize: '32px'}}>Create new post</Typography>
+          <Typography color='red'>{errorMsg}</Typography>
           <form className="createForm">
             <div className="formGroup">
-              <label>Post title</label>
+              <Typography fontWeight={'bold'}>Post title</Typography>
               <TextField
                 type="text"
                 required
@@ -123,13 +122,13 @@ const Create = () => {
             </div>
             <div className="formGroup">
               <FormControl>
-                <InputLabel id="dining Hall">Post Category</InputLabel>
+                <InputLabel id="dining Hall">Dining Hall</InputLabel>
                 <Select
-                  labelID="dining hall"
+                  labelId="dining hall"
                   value={dininghall}
                   onChange={(e) => setDininghall(e.target.value)}
                   label="Dining Hall"
-                  fullWidth
+                  sx={{width: 300}}
                 >
                   <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
                   <MenuItem value="Epicuria">Epicuria</MenuItem>
@@ -141,8 +140,10 @@ const Create = () => {
               <FormControl>
                 <InputLabel id="Category">Meal Period</InputLabel>
                 <Select
+                  label="Meal Period"
                   value={mealPeriod}
                   onChange={(e) => setMealperiod(e.target.value)}
+                  sx={{width: 300}}
                 >
                   <MenuItem value="Breakfast">Breakfast</MenuItem>
                   <MenuItem value="Lunch">Lunch</MenuItem>
@@ -151,16 +152,19 @@ const Create = () => {
               </FormControl>
             </div>
             <div className="formGroup">
-              <label>Post body</label>
-              <textarea
+              <Typography fontWeight={'bold'}>Post content</Typography>
+              <TextField
                 type="text"
                 required
+                multiline
                 value={body}
-                fullWidth
+                maxRows={5}
+                style = {{width: 300}}
                 onChange={(e) => setBody(e.target.value)}
-              ></textarea>
+              />
             </div>
             <div className="formGroup">
+              <Typography fontWeight={'bold'}>Upload Image</Typography>
               <input
                 type="file"
                 accept="image/*"
