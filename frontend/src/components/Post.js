@@ -8,6 +8,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SendIcon from '@mui/icons-material/Send';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const Post = ({post}) => {
 
@@ -27,6 +28,8 @@ const Post = ({post}) => {
   else {
     disabled = true;
   }
+
+  const navigate = useNavigate();
 
   const handleLikeClick = () => {
     
@@ -82,7 +85,7 @@ const Post = ({post}) => {
       setCommentSuccess(true)
       const timeoutId = setTimeout(() => {
         setCommentSuccess(false);
-        }, 5000);
+        }, 3000);
 
         return () => clearTimeout(timeoutId);
     })
@@ -140,6 +143,7 @@ const Post = ({post}) => {
       <CardContent>
         <Stack direction="row" sx={{alignItems: 'center', mb: 1}}>
           <Button
+            onClick={() => navigate(`/profile/${post.author_username}`)}
             sx = {{
               borderRadius: "50%",
               width: 60,
@@ -189,21 +193,31 @@ const Post = ({post}) => {
           <Typography ml={1} color={'green'}>{commentSuccess ? 'Success!' : ''} </Typography>
         </Stack>
 
-        <Stack mt={1}>
+        <Stack mt={1} spacing={1}>
           {comments.map((comment) => (
             <div key={comment.id}>
-              <Stack direction="row">
-                <img 
-                  src={comment.author_profile_image_url}
-                  alt={`${comment.author_username} profile`}
-                  style={{
+              <Stack direction="row" alignItems={"flex-start"}>
+                <Button
+                  onClick={() => navigate(`/profile/${comment.author_username}`)}
+                  sx = {{
                     borderRadius: "50%",
-                    width: 25,
-                    height: 25,
-                    display: comment.id === -1 ? "none" : "block"
+                    minWidth: 25,
+                    minHeight: 20,
+                    mr: 0.5
                   }}
-                />
-                <Typography>{comment.author_username}{comment.id === -1 ? '' : ': '}{comment.content}</Typography>
+                >
+                  <img 
+                    src={comment.author_profile_image_url}
+                    alt={`${comment.author_username} profile`}
+                    style={{
+                      borderRadius: "50%",
+                      width: 25,
+                      height: 25,
+                      display: comment.id === -1 ? "none" : "block"
+                    }}
+                  />
+                </Button>
+                <Typography width={750} mt={0.7}><b>{comment.author_username}</b>{comment.id === -1 ? '' : ': '}{comment.content}</Typography>
               </Stack>
             </div>
           ))}
