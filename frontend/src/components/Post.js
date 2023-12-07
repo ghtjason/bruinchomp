@@ -10,7 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
-const Post = ({post}) => {
+const Post = ({post, in_create = false}) => {
 
   const [liked, setLiked] = useState(post.is_liked);
   const [count, setCount] = useState(post.like_count);
@@ -22,7 +22,7 @@ const Post = ({post}) => {
 
   // can't like or comment when not logged in
   const authToken = Cookies.get('authToken');
-  if(authToken) {
+  if(authToken && !in_create) {
     disabled = false;
   } 
   else {
@@ -137,8 +137,8 @@ const Post = ({post}) => {
       </CardContent>
       <img
         src={post.image_url}
-        alt={post.title}
-        style={{width:'50vw', maxWidth: 900, minWidth: 600, maxHeight: 900, minHeight: 300}}
+        alt={"image not shown yet"}
+        style={{width:'50vw', maxWidth: 900, minWidth: 600, maxHeight: 800, minHeight: 300}}
       />
       <CardContent>
         <Stack direction="row" sx={{alignItems: 'center', mb: 1}}>
@@ -163,7 +163,11 @@ const Post = ({post}) => {
           </Button>
           <Typography ml={1} sx = {{fontWeight: 'bold', fontSize: '20px'}}>{post.author_username}</Typography>
         </Stack>
-        <Typography sx={{fontSize: '16px'}}>{post.content}</Typography>
+        
+        <Stack>
+          <Typography sx={{fontSize: '16px', wordWrap: "break-word"}}>{post.content}</Typography>
+        </Stack>
+
 
         <TextField
           id="add comment"
@@ -188,8 +192,8 @@ const Post = ({post}) => {
           <Button disabled={disabled} onClick={handleLikeClick} variant={liked ? 'contained' : 'outlined'}>
             <ThumbUpOffAltIcon sx={{marginRight: 1}}/>{count} Likes
           </Button>
-          <Button variant="outlined" onClick={getComments}>{commentsShown ? 'hide' : 'show'} comments</Button>
-          <Typography ml={1} color={'red'}>{disabled ? 'Please log in to like or comment!' : ''}</Typography>
+          <Button variant="outlined" disabled={in_create}onClick={getComments}>{commentsShown ? 'hide' : 'show'} comments</Button>
+          <Typography ml={1} color={'red'}>{disabled && !in_create ? 'Please log in to like or comment!' : ''}</Typography>
           <Typography ml={1} color={'green'}>{commentSuccess ? 'Success!' : ''} </Typography>
         </Stack>
 
@@ -217,7 +221,9 @@ const Post = ({post}) => {
                     }}
                   />
                 </Button>
-                <Typography width={750} mt={0.7}><b>{comment.author_username}</b>{comment.id === -1 ? '' : ': '}{comment.content}</Typography>
+                <Typography sx={{width: 750, mt: 0.7, wordWrap: "break-word"}}>
+                  <b>{comment.author_username}</b>{comment.id === -1 ? '' : ': '}{comment.content}
+                </Typography>
               </Stack>
             </div>
           ))}

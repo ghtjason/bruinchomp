@@ -11,10 +11,14 @@ import {
   InputLabel,
   Typography,
   Card,
+  Stack,
+  Box,
 } from "@mui/material";
 import Cookies from "js-cookie"; // cookiessssss
 import { uploadImage } from '../utils/uploadImage'
 import { proxy_server } from "../utils/constants";
+import Post from "../components/Post";
+import { fetchUserInfo } from "../utils/fetchUserInfo";
 
 const Create = () => {
   const [title, setTitle] = useState("");
@@ -24,6 +28,9 @@ const Create = () => {
   const [mealPeriod, setMealperiod] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [image_url, setImage_url] = useState("");
+  const [author_username, setAuthorUsername] = useState("");
+  const [pfp_url, setPfpUrl] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
   console.log(image);
 
   const authToken = Cookies.get("authToken");
@@ -103,82 +110,110 @@ const Create = () => {
     setBody("");
     navigate("/home");
   };
+
+  if(authToken) {
+    fetchUserInfo(authToken).then(result => {
+      setAuthorUsername(result.username)
+      setPfpUrl(result.profile_image_url)
+    })
+  }
+
+  console.log(image)
+  const post = {
+    hall: dininghall,
+    meal_period: mealPeriod,
+    author_username: author_username,
+    image_url: imagePreview,
+    title: title,
+    content: body,
+    timestamp: Date(),
+    author_profile_image_url: pfp_url,
+  }
+
+
   if (authToken) {
     return (
-      <Card>
-        <div className="createPost">
-          <Typography sx={{fontWeight: 'bold', fontSize: '32px'}}>Create new post</Typography>
-          <Typography color='red'>{errorMsg}</Typography>
-          <form className="createForm">
-            <div className="formGroup">
-              <Typography fontWeight={'bold'}>Post title</Typography>
-              <TextField
-                type="text"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                fullWidth
-              />
-            </div>
-            <div className="formGroup">
-              <FormControl>
-                <InputLabel id="dining Hall">Dining Hall</InputLabel>
-                <Select
-                  labelId="dining hall"
-                  value={dininghall}
-                  onChange={(e) => setDininghall(e.target.value)}
-                  label="Dining Hall"
-                  sx={{width: 300}}
-                >
-                  <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
-                  <MenuItem value="Epicuria">Epicuria</MenuItem>
-                  <MenuItem value="De Neve">De Neve</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="formGroup">
-              <FormControl>
-                <InputLabel id="Category">Meal Period</InputLabel>
-                <Select
-                  label="Meal Period"
-                  value={mealPeriod}
-                  onChange={(e) => setMealperiod(e.target.value)}
-                  sx={{width: 300}}
-                >
-                  <MenuItem value="Breakfast">Breakfast</MenuItem>
-                  <MenuItem value="Lunch">Lunch</MenuItem>
-                  <MenuItem value="Dinner">Dinner</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="formGroup">
-              <Typography fontWeight={'bold'}>Post content</Typography>
-              <TextField
-                type="text"
-                required
-                multiline
-                value={body}
-                maxRows={5}
-                style = {{width: 300}}
-                onChange={(e) => setBody(e.target.value)}
-              />
-            </div>
-            <div className="formGroup">
-              <Typography fontWeight={'bold'}>Upload Image</Typography>
-              <input
-                type="file"
-                accept="image/png, image/jpg, image/jpeg"
-                onChange={(e) => {
-                  setImage(e.target.files[0]);
-                }}
-              />
-            </div>
-          </form>
-          <Button variant="outlined" onClick={handleSubmit}>
-            Add Post
-          </Button>
-        </div>
-      </Card>
+      <Stack direction="row" sx={{width: '75vw', justifyContent: 'space-between', alignItems: 'center'}}>
+        <Box>
+          <div className="createPost">
+            <Typography sx={{fontWeight: 'bold', fontSize: '32px'}}>Create new post</Typography>
+            <Typography color='red'>{errorMsg}</Typography>
+            <form className="createForm">
+              <div className="formGroup">
+                <Typography fontWeight={'bold'}>Post title</Typography>
+                <TextField
+                  type="text"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  fullWidth
+                />
+              </div>
+              <div className="formGroup">
+                <FormControl>
+                  <InputLabel id="dining Hall">Dining Hall</InputLabel>
+                  <Select
+                    labelId="dining hall"
+                    value={dininghall}
+                    onChange={(e) => setDininghall(e.target.value)}
+                    label="Dining Hall"
+                    sx={{width: 300}}
+                  >
+                    <MenuItem value="Bruin Plate">Bruin Plate</MenuItem>
+                    <MenuItem value="Epicuria">Epicuria</MenuItem>
+                    <MenuItem value="De Neve">De Neve</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="formGroup">
+                <FormControl>
+                  <InputLabel id="Category">Meal Period</InputLabel>
+                  <Select
+                    label="Meal Period"
+                    value={mealPeriod}
+                    onChange={(e) => setMealperiod(e.target.value)}
+                    sx={{width: 300}}
+                  >
+                    <MenuItem value="Breakfast">Breakfast</MenuItem>
+                    <MenuItem value="Lunch">Lunch</MenuItem>
+                    <MenuItem value="Dinner">Dinner</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="formGroup">
+                <Typography fontWeight={'bold'}>Post content</Typography>
+                <TextField
+                  type="text"
+                  required
+                  multiline
+                  value={body}
+                  maxRows={5}
+                  style = {{width: 300}}
+                  onChange={(e) => setBody(e.target.value)}
+                />
+              </div>
+              <div className="formGroup">
+                <Typography fontWeight={'bold'}>Upload Image</Typography>
+                <input
+                  type="file"
+                  accept="image/png, image/jpg, image/jpeg"
+                  onChange={(e) => {
+                    setImage(e.target.files[0]);
+                    setImagePreview(URL.createObjectURL(e.target.files[0]));
+                  }}
+                />
+              </div>
+            </form>
+            <Button variant="outlined" onClick={handleSubmit}>
+              Add Post
+            </Button>
+          </div>
+        </Box>
+        <Stack spacing={1}>
+          <Typography sx={{fontWeight: 'bold', fontSize: '32px'}}>Post Preview: </Typography>
+          <Post post={post} in_create={true}/>
+        </Stack>
+      </Stack>
     );
   } else {
     return <Typography>Please log in first!</Typography>;
