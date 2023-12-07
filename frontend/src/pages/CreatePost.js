@@ -56,6 +56,8 @@ const Create = () => {
     //Before trying to create a post object
     const uploadedImageUrl = await uploadImage(e, image, authToken, setImage_url, setErrorMsg);
 
+    if(!uploadedImageUrl) return;
+
     let data = JSON.stringify({
       title: title,
       content: body,
