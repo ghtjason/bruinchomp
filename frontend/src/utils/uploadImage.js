@@ -3,7 +3,6 @@ import { proxy_server } from "./constants";
 
 export const uploadImage = async (e, image, authToken, setImage_url, setErrorMsg) => {
   //Process image url first
-  e.preventDefault();
   if (!image) {
     setErrorMsg("Please upload an image");
     return;
