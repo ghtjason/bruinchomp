@@ -62,7 +62,7 @@ const Register = () => {
           navigate("/login");
         } else {
           if (response.data.includes('One or more of the choices')) {
-            setMessage("Username must not include spaces");
+            setMessage("Username contains invalid characters");
           }
           else if (response.data.includes('Length must be')) {
             setMessage("Username length must be between 1 and 20");

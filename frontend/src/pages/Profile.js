@@ -1,20 +1,24 @@
 import React from 'react'
 import { Stack, Typography, Avatar, Button, Card, CardContent, TextField } from '@mui/material'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { fetchPosts } from '../utils/fetchPosts'
-import { fetchUserInfo } from '../utils/fetchUserInfo'
+import { fetchUserInfo, fetchUsernameInfo } from '../utils/fetchUserInfo'
 import Post from '../components/Post'
 import Cookies from 'js-cookie'; // cookiessssss
 import axios from "axios";
 import { uploadImage } from '../utils/uploadImage'
 import { proxy_server } from '../utils/constants'
+import { useParams } from 'react-router-dom'
+
 
 // function to check if username is found yet. If so, it sets posts.
 const Profile = () => {
   const authToken = Cookies.get('authToken');
+  const {user} = useParams();
   let loggedIn = false;
 
-  // if logged in, fetch posts & user info
+  const [viewingSelf, setViewingSelf] = useState(!user)
+  const [userExists, setUserExists] = useState(true)
   const [posts, setPosts] = useState(null);
   const [username, setUsername] = useState([]);
   const [bio, setBio] = useState('');
@@ -23,23 +27,52 @@ const Profile = () => {
   const [pfpEdited, setPfpEdited] = useState(false);
   const [pfp_url, setPfp_url] = useState("");
   const [editMode, setEditMode] = useState(false);
+  useEffect(() => { // fixes bug when clicking 'profile' button when viewing someone else's profile
+    setPosts(null)
+  }, [user])
 
-  const initializeProfile = async (e) => {
-    await fetchUserInfo(authToken).then(result => {
-      setUsername(result.username)
-      setBio(result.bio)
-      setPfp_url(result.profile_image_url)
-      console.log(result.profile_image_url)
-    })
-    fetchPosts(username, authToken).then(result => {
-      if(result) setPosts(result);
-    })
+  const initializeProfile = async () => {
+    if (user) {
+      await fetchUsernameInfo(user).then(result => {
+        if (result.username === undefined) {
+          setUserExists(false)
+        }
+        else {
+          setUsername(result.username)
+          setBio(result.bio)
+          setPfp_url(result.profile_image_url)
+        }
+      })
+    }
+    if (authToken) {
+      await fetchUserInfo(authToken).then(result => {
+        if (!user) {
+          setUsername(result.username)
+          setBio(result.bio)
+          setPfp_url(result.profile_image_url)
+        }
+        setViewingSelf(username === result.username)
+      })
+      fetchPosts(username, authToken).then(result => {
+        if(result) setPosts(result);
+      })
+    }
+    else {
+      fetchPosts(username).then(result => {
+        if(result) setPosts(result);
+      })
+    }
   }
 
+
+  if (!posts) {
+    initializeProfile();
+  }
   if (authToken) {
     loggedIn = true;
-    if(posts == null) initializeProfile();
   }
+
+
 
   const handleEdit = (e) => {
     // Update the bio as the user types
@@ -112,7 +145,7 @@ const Profile = () => {
 
   // return
   let pageContent;
-  if(loggedIn) {
+  if((loggedIn && viewingSelf) || (user && userExists)) {
     if(!editMode) { // what to display outside edit mode
       pageContent =
         <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2}}>
@@ -124,7 +157,7 @@ const Profile = () => {
               <CardContent>
                 <div style={profileStyles.header}>
                   <Typography variant="h4">{username}</Typography>
-                  <Button variant="outlined" color="primary" onClick={() => setEditMode(true)}>Edit Profile</Button>
+                  <Button disabled={!viewingSelf} variant="outlined" color="primary" onClick={() => setEditMode(true)}>Edit Profile</Button>
                 </div>
 
                 <Typography variant="body1">Posts: {posts ? posts.length : 0}</Typography> {/* POST COUNT */}
@@ -203,6 +236,10 @@ const Profile = () => {
               </div>
             </Stack>
     }
+  }
+  else if (user && !userExists) {
+    pageContent =
+    <Typography>No user found.</Typography>
   }
   else {
     pageContent =
