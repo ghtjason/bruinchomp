@@ -87,7 +87,7 @@ const Home = () => {
     <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
       <div className="Posts">
         <Stack direction="row" sx={{width: '50vw', maxWidth: 900, minWidth: 600, justifyContent: 'space-between', mb: 2}}>
-          <SearchAndFilterBar/>
+          <SearchAndFilterBar categories={categories} setCategories={setCategories}/>
         </Stack>
         <Typography sx={{fontWeight: 'bold', fontSize: '28px'}}>{loaded}</Typography>
         <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>

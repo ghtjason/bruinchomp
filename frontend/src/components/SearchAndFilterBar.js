@@ -4,7 +4,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import { Typography, InputAdornment, TextField, Autocomplete, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 
-const SearchAndFilterBar = () => {
+const SearchAndFilterBar = ({categories, setCategories}) => {
     const diningHallOptions = ['All', 'De Neve', 'Bruin Plate', 'Epicuria'];
     const mealOptions = ['All', 'Breakfast', 'Lunch', 'Dinner'];
     const orderOptions = ['recent', 'popular', 'relevant'];
@@ -63,6 +63,22 @@ const SearchAndFilterBar = () => {
         }
     }
 
+    const handleHallChange = (e) => {
+        setHallFilter(e.target.value);
+        const {
+            target: {value},
+          } = e;
+          setCategories(typeof(value) === 'string' ? value.split(',') : value);
+    }
+
+    const handleMealChange = (e) => {
+        setMealFilter(e.target.value);
+        const {
+            target: {value},
+          } = e;
+          setCategories(typeof(value) === 'string' ? value.split(',') : value);
+    }
+
     return (
         <Grid container spacing={2} alignItems="center">
             <Grid item>
@@ -73,7 +89,7 @@ const SearchAndFilterBar = () => {
                         value={hallFilter}
                         label="Dining Jall"
                         onKeyDown={handleSearch}
-                        onChange={(e) => setHallFilter(e.target.value)}
+                        onChange={handleHallChange}
                     >
                         {diningHallOptions.map((option) => (
                             <MenuItem key={option} value={option}>
@@ -91,7 +107,7 @@ const SearchAndFilterBar = () => {
                         value={mealFilter}
                         label="Meal"
                         onKeyDown={handleSearch}
-                        onChange={(e) => setMealFilter(e.target.value)}
+                        onChange={handleMealChange}
                     >
                         {mealOptions.map((option) => (
                             <MenuItem key={option} value={option}>
