@@ -37,7 +37,7 @@ const SearchFeed = () => {
     };
     search();
   }, [searchTerm])
- 
+
   return (
     <Stack sx= {{ width: '100vw', mt: 2}}>
       <Stack direction="row" sx={{justifyContent: 'space-between', mr: 10, ml: 5}}> 
@@ -48,6 +48,8 @@ const SearchFeed = () => {
           <Searchbar/>
         </Box>
       </Stack>
+
+      <Typography sx={{ml: 5, fontSize: '18px'}}>{searchedPosts.length !== 0 ? '' : "No posts found :("}</Typography>
 
       <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>
           {searchedPosts.map((posts) => (

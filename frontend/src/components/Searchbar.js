@@ -13,7 +13,7 @@ const Searchbar = () => {
     {label: 'user: ', explanation: 'search for username'},
     {label: 'hall: ', explanation: 'search for dining hall'},
     {label: 'meal: ', explanation: 'search for meal period'},
-    {label: 'order: ', explanation: "search by 'relevant' or 'popular' "},
+    {label: 'order: ', explanation: "search by 'relevant' or 'popular'"},
     {label: '', explanation: 'no field = search for any phrase!'},
   ];
 
