@@ -167,7 +167,7 @@ const Create = () => {
               <Typography fontWeight={'bold'}>Upload Image</Typography>
               <input
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpg, image/jpeg"
                 onChange={(e) => {
                   setImage(e.target.files[0]);
                 }}

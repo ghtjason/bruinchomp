@@ -192,7 +192,7 @@ const Profile = () => {
                 <div className="formGroup" style={{width: '10%'}}>
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/png, image/jpg, image/jpeg"
                     onChange={(e) => {
                       if(!image) setImage(e.target.files[0])
                       setPfpEdited(true)
