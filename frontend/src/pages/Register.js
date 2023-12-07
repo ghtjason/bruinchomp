@@ -15,7 +15,7 @@ import { proxy_server } from "../utils/constants";
 const Register = () => {
   const navigate = useNavigate();
   //Modifies the state
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const [matchpass, setMatchpass] = useState("");
   const [message, setMessage] = useState();
@@ -29,7 +29,7 @@ const Register = () => {
     if (pass !== matchpass) {
       setMessage("Passwords do not match!");
       console.log("passwords do not match"); // replace with UI element later
-    } else createUser(email, pass);
+    } else createUser(username, pass);
   };
 
   const handleLogout = () => {
@@ -38,9 +38,9 @@ const Register = () => {
   };
 
   // can delegate to utils file later if we want to
-  function createUser(email, password) {
+  function createUser(username, password) {
     let data = JSON.stringify({
-      username: email,
+      username: username,
       password: password,
     });
 
@@ -121,15 +121,17 @@ const Register = () => {
         <Card style={cardStyle}>
           <CardContent>
             <h2>Create Account</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <TextField
+                required
                 style={formFieldStyle}
                 label="Username"
                 variant="outlined"
                 fullWidth
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
+                required
                 style={formFieldStyle}
                 label="Password"
                 type="password"
@@ -138,6 +140,7 @@ const Register = () => {
                 onChange={(e) => setPass(e.target.value)}
               />
               <TextField
+                required
                 style={formFieldStyle}
                 label="Confirm Password"
                 type="password"
@@ -149,11 +152,12 @@ const Register = () => {
                 {message}
               </Typography>
               <Button
+                disabled={!username || !pass || !matchpass}
                 style={formFieldStyle}
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={handleSubmit}
+                type="submit"
               >
                 Register
               </Button>

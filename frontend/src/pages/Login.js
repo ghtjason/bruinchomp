@@ -13,22 +13,23 @@ import { proxy_server } from "../utils/constants";
 
 const Login = () => {
   //Modifies the state
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState();
   const [pass, setPass] = useState();
   const [message, setMessage] = useState();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
+    console.log('handling submit')
     //Prevent reloading the page
     e.preventDefault();
-    console.log(email);
-    console.log(pass);
+    // console.log(username);
+    // console.log(pass);
 
     setMessage("Processing...");
 
     // handle logging in: can split into utils file or seperate function later
     let data = JSON.stringify({
-      username: email,
+      username: username,
       password: pass,
     });
 
@@ -116,15 +117,17 @@ const Login = () => {
         <Card style={cardStyle}>
           <CardContent>
             <h2>Login</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <TextField
+                required
                 style={formFieldStyle}
                 label="Username"
                 variant="outlined"
                 fullWidth
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
+                required
                 style={formFieldStyle}
                 label="Password"
                 type="password"
@@ -136,11 +139,12 @@ const Login = () => {
                 {message}
               </Typography>
               <Button
+                type="submit"
                 style={formFieldStyle}
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={handleSubmit}
+                disabled={!username || !pass}
               >
                 Log in
               </Button>
