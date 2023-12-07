@@ -1,7 +1,7 @@
 import React from 'react'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Stack, Typography, Box, Paper, InputAdornment, TextField, Autocomplete } from '@mui/material'
+import { Typography, InputAdornment, TextField, Autocomplete } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 
 const Searchbar = () => {

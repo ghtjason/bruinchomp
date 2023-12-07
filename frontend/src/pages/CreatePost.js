@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "../index.css";
 import axios from "axios";
-import { auth_token } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -12,11 +11,10 @@ import {
   InputLabel,
   Typography,
   Card,
-  CardContent,
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Cookies from "js-cookie"; // cookiessssss
 import { uploadImage } from '../utils/uploadImage'
+import { proxy_server } from "../utils/constants";
 
 const Create = () => {
   const [title, setTitle] = useState("");
@@ -69,7 +67,7 @@ const Create = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://api-m46o.onrender.com/posts",
+      url: `${proxy_server}/posts`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,

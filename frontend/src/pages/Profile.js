@@ -1,12 +1,13 @@
 import React from 'react'
-import { Stack, Box, Typography, Avatar, Button, Card, CardContent, TextField } from '@mui/material'
-import { useState, useEffect } from 'react'
+import { Stack, Typography, Avatar, Button, Card, CardContent, TextField } from '@mui/material'
+import { useState } from 'react'
 import { fetchPosts } from '../utils/fetchPosts'
 import { fetchUserInfo } from '../utils/fetchUserInfo'
 import Post from '../components/Post'
 import Cookies from 'js-cookie'; // cookiessssss
 import axios from "axios";
 import { uploadImage } from '../utils/uploadImage'
+import { proxy_server } from '../utils/constants'
 
 // function to check if username is found yet. If so, it sets posts.
 const Profile = () => {
@@ -61,7 +62,7 @@ const Profile = () => {
     }
     let config = {
       method: "PATCH",
-      url: "https://api-m46o.onrender.com/users",
+      url: `${proxy_server}/users`,
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer ' + authToken

@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Card, Typography, CardContent, Button, Stack, IconButton, TextField, InputAdornment, Chip } from '@mui/material'
 import { useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { proxy_server } from '../utils/constants';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -41,7 +42,7 @@ const Post = ({post}) => {
     let config = {
     method: `${method}`,
     maxBodyLength: Infinity,
-    url: `https://api-m46o.onrender.com/posts/${post.id}/likes`,
+    url: `${proxy_server}/posts/${post.id}/likes`,
     headers: { 
       'Authorization': `Bearer ${authToken}`
     }
@@ -68,7 +69,7 @@ const Post = ({post}) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `https://api-m46o.onrender.com/posts/${post.id}/comments`,
+      url: `${proxy_server}/posts/${post.id}/comments`,
       headers: { 
         'Content-Type': 'application/json', 
         'Authorization': `Bearer ${authToken}`
@@ -99,7 +100,7 @@ const Post = ({post}) => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `https://api-m46o.onrender.com/posts/${post.id}/comments`,
+        url: `${proxy_server}/posts/${post.id}/comments`,
         headers: { }
       };
       

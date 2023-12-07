@@ -1,8 +1,9 @@
 export const dining_hall = ["De Neve", "Bruin Plate", "Epicuria"];
 export const meal_period = ["Breakfast", "Lunch", "Dinner"];
 
-export const auth_token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwMTQyNDIzNiwianRpIjoiYTI2N2NkYWQtMWYyMi00NTBlLTg2MTgtMDU4NDYwN2FmNzQ1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imphc29uIiwibmJmIjoxNzAxNDI0MjM2LCJleHAiOjE3MDE1OTcwMzZ9.xcooN1MBkZx6l8PeOlYKSUl0vx5AgnxYp6vFpFRnO8I'
+export const proxy_server = "https://api-m46o.onrender.com";
 
+// navbar items to route to
 export const mainNavbarItems = [
   {
     id: 0,
@@ -34,6 +35,7 @@ export const mainNavbarItems = [
   },
 ];
 
+// for use in testing with API fetching
 export const placeholderPosts = [
   {
     title: "Bruin Plate",

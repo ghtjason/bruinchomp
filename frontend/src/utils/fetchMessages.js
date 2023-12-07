@@ -1,12 +1,12 @@
 import axios from "axios";
-import { fetchUserInfo } from "../utils/fetchUserInfo";
+import { proxy_server } from "./constants";
 
 //Get user messages
 export const fetchMessages = async (username, authToken) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: "https://api-m46o.onrender.com/messages",
+    url: `${proxy_server}/messages`,
     headers: {
       Authorization: "Bearer " + authToken,
     },

@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
@@ -10,7 +9,6 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 
 import SearchFeed from "./pages/SearchFeed";
-import axios from "axios";
 import Profile from "./pages/Profile";
 
 export default function App() {

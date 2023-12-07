@@ -5,8 +5,9 @@ import { Stack, Box, Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { proxy_server } from '../utils/constants'
 
-const SearchFeed = ({key, term}) => {
+const SearchFeed = () => {
   const {searchTerm} = useParams();
   const [searchedPosts, setSearchedPosts] = useState([])
 
@@ -16,7 +17,7 @@ const SearchFeed = ({key, term}) => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `https://api-m46o.onrender.com/posts/search?${searchTerm}`,
+        url: `${proxy_server}/posts/search?${searchTerm}`,
         headers: { 
         }
       };

@@ -1,6 +1,6 @@
 import React from 'react';
 import Post from '../components/Post';
-import { Box, Stack, Button, Menu, MenuItem, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { useState, useEffect } from "react";
 import FilterMenu from '../components/FilterMenu'
 

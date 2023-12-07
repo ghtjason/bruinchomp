@@ -1,13 +1,8 @@
 import {
   Button,
   TextField,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
   Typography,
   Card,
-  CardContent,
   Stack,
 } from "@mui/material";
 
@@ -51,7 +46,7 @@ const Messages = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://api-m46o.onrender.com/messages",
+      url: `${proxy_server}/messages`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { proxy_server } from "./constants";
 
 export const uploadImage = async (e, image, authToken, setImage_url, setErrorMsg) => {
   //Process image url first
@@ -15,7 +16,7 @@ export const uploadImage = async (e, image, authToken, setImage_url, setErrorMsg
 
   let config = {
     method: "post",
-    url: "https://api-m46o.onrender.com/image",
+    url: `${proxy_server}/image`,
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

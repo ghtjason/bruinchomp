@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
-  Stack,
-  Box,
   Typography,
   Button,
   Card,
@@ -11,6 +9,7 @@ import {
 } from "@mui/material";
 import Cookies from "js-cookie"; // cookiessssss
 import { useNavigate } from "react-router-dom"; // for create account redirection
+import { proxy_server } from "../utils/constants";
 
 const Login = () => {
   //Modifies the state
@@ -35,7 +34,7 @@ const Login = () => {
 
     let config = {
       method: "post",
-      url: "https://api-m46o.onrender.com/login",
+      url: `${proxy_server}/login`,
       headers: {
         "Content-Type": "application/json",
       },

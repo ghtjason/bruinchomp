@@ -1,10 +1,11 @@
 import axios from "axios";
+import { proxy_server } from "./constants";
 
 export const fetchUserInfo = async (authToken) => {
   let authID = 'Bearer ' + authToken;
   let config = {
     method: 'get',
-    url: 'https://api-m46o.onrender.com/users',
+    url: `${proxy_server}/users`,
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': authID

@@ -1,7 +1,5 @@
 import React from 'react'
-import { Box, Stack, Button, Menu, MenuItem, Select, FormControl, InputLabel, OutlinedInput, Chip, Divider } from '@mui/material'
-import { useState, useEffect } from "react";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Box, MenuItem, Select, FormControl, InputLabel, Chip, Divider } from '@mui/material'
 
 const FilterMenu = ({categories, setCategories}) => {
 

@@ -9,8 +9,9 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie"; // cookiessssss
 import { useNavigate } from "react-router-dom";
+import { proxy_server } from "../utils/constants";
 
-const PASSWORD_REQ = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+// const PASSWORD_REQ = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const Register = () => {
   const navigate = useNavigate();
   //Modifies the state
@@ -25,7 +26,7 @@ const Register = () => {
 
     setMessage("Processing...");
 
-    if (pass != matchpass) {
+    if (pass !== matchpass) {
       setMessage("Passwords do not match!");
       console.log("passwords do not match"); // replace with UI element later
     } else createUser(email, pass);
@@ -45,7 +46,7 @@ const Register = () => {
 
     let config = {
       method: "post",
-      url: "https://api-m46o.onrender.com/users",
+      url: `${proxy_server}/users`,
       headers: {
         "Content-Type": "application/json",
       },
