@@ -4,10 +4,11 @@ import { Drawer, List, ListItemText, Button, Typography, Box, ListItemButton} fr
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import { mainNavbarItems } from '../utils/constants';
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const navigate = useNavigate();
-
+  const authToken = Cookies.get('authToken');
   const [selectedItem, setSelectedItem] = useState(null)
 
   return (
@@ -60,6 +61,7 @@ const Navbar = () => {
 
         <Box textAlign = 'center' sx = {{marginTop: 'auto', marginBottom: 3}}>
           <Button 
+            disabled = {!authToken}
             variant = "contained"
             component = {Link}
             to = "/create"
