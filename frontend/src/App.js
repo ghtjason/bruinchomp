@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 
 import SearchFeed from "./pages/SearchFeed";
+import Searched from "./pages/Searched";
 import Profile from "./pages/Profile";
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/:user" element={<Profile />} />
             <Route path="/search/:searchTerm" element={<SearchFeed />} />
+            <Route path="/posts/search" element={<Searched />} />
           </Routes>
         </Box>
       </BrowserRouter>

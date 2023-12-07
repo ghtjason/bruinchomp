@@ -9,6 +9,7 @@ import { dining_hall, meal_period } from '../utils/constants';
 import Cookies from 'js-cookie';
 
 import axios from 'axios';
+import SearchAndFilterBar from '../components/SearchAndFilterBar';
 
 const Home = () => {
 
@@ -86,8 +87,7 @@ const Home = () => {
     <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
       <div className="Posts">
         <Stack direction="row" sx={{width: '50vw', maxWidth: 900, minWidth: 600, justifyContent: 'space-between', mb: 2}}>
-          <FilterMenu categories={categories} setCategories={setCategories}/>
-          <Searchbar/>
+          <SearchAndFilterBar/>
         </Stack>
         <Typography sx={{fontWeight: 'bold', fontSize: '28px'}}>{loaded}</Typography>
         <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>
@@ -101,5 +101,8 @@ const Home = () => {
     </Stack>
   )
 }
+
+{/* <FilterMenu categories={categories} setCategories={setCategories}/> 
+<Searchbar/>*/}
 
 export default Home
