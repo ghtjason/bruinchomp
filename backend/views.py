@@ -73,9 +73,9 @@ def search_posts():
         if keyword:
             keyword = keyword.replace("%20", " ")
             regex = ""
-            if(match_search == "contains"):
+            if (match_search == "contains"):
                 regex = keyword.lower()
-            elif(match_search == "starts"):
+            elif (match_search == "starts"):
                 regex = '\\m' + keyword.lower()
             else:
                 regex = '\\m' + keyword.lower() + '\\M'
@@ -339,9 +339,20 @@ def login_user():
         return f"error: {e}"
 
 
-@app.route('/messages', methods=['GET'])
+@app.route('/messages/sent', methods=['GET'])
 @jwt_required()
-def get_messages():
+def get_sent_msgs():
+    try:
+        user = User.query.get(get_jwt_identity())
+        messages = user.sent_msgs
+        return messages_schema.dump(messages)
+    except Exception as e:
+        return f"error: {e}"
+
+
+@app.route('/messages/received', methods=['GET'])
+@jwt_required()
+def get_received_msgs():
     try:
         user = User.query.get(get_jwt_identity())
         messages = user.received_msgs
