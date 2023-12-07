@@ -14,7 +14,7 @@ class Post(db.Model):
     # post is child of image because foreign key? not sure how else to do this
     image_url = db.Column(db.ForeignKey('image.url'), nullable=False)
     image = db.relationship('Image', back_populates='posts')
-    comments = db.relationship('Comment', cascade='all, delete')  # deletes comments when parent is deleted
+    comments = db.relationship('Comment', back_populates='parent_post', cascade='all, delete')
     liked_users = db.relationship('User', secondary='post_liked_users', back_populates='liked_posts')
 
     def __repr__(self):
@@ -23,7 +23,7 @@ class Post(db.Model):
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # currently one-way relationship post->comment, may need to change in future
+    parent_post = db.relationship('Post', back_populates='comments')
     parent_post_id = db.Column(db.ForeignKey('post.id'), nullable=False)
     author_username = db.Column(db.ForeignKey('user.username'), nullable=False)
     author = db.relationship('User', back_populates='authored_comments')
