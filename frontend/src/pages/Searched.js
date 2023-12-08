@@ -12,9 +12,9 @@ const Searched = () => {
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const searchTerm = queryParams.get('key');
   //   const userTerm = queryParams.get('user');
-    const hallTerm = queryParams.get('hall');
-    const mealTerm = queryParams.get('meal');
-    const orderTerm = queryParams.get('order');
+    // const hallTerm = queryParams.get('hall');
+    // const mealTerm = queryParams.get('meal');
+    // const orderTerm = queryParams.get('order');
   //   const matchTerm = queryParams.get('match');
   //const {searchTerm} = useParams();
   const [searchedPosts, setSearchedPosts] = useState([])
@@ -81,9 +81,9 @@ const Searched = () => {
       </Stack>
 
       <Stack spacing={2} mt={3} sx={{ alignItems: 'center' }}>
-        {searchedPosts.map((posts) => (
-          <div key={posts.id}>
-            <Post post={posts} />
+        {searchedPosts.map((post) => (
+          <div key={post.id}>
+            <Post post={post} />
           </div>
         ))}
       </Stack>

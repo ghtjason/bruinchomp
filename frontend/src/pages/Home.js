@@ -2,12 +2,7 @@ import React from 'react';
 import Post from '../components/Post';
 import { Stack, Typography } from '@mui/material'
 import { useState, useEffect } from "react";
-import FilterMenu from '../components/FilterMenu'
-
-import Searchbar from '../components/Searchbar';
-import { dining_hall, meal_period } from '../utils/constants';
 import Cookies from 'js-cookie';
-
 import axios from 'axios';
 import SearchAndFilterBar from '../components/SearchAndFilterBar';
 
@@ -48,8 +43,8 @@ const Home = () => {
   }, [authID])
 
   const [filteredPosts, setFilteredPosts] = useState(posts);
-  const [hallFilter, setHallFilter] = useState('');
-  const [mealFilter, setMealFilter] = useState('');
+  const [hallFilter, setHallFilter] = useState('All');
+  const [mealFilter, setMealFilter] = useState('All');
   const [orderFilter, setOrderFilter] = useState('recent');
 
   useEffect(() => {
@@ -92,16 +87,16 @@ const Home = () => {
   }, [orderFilter, hallFilter, mealFilter, posts])
 
   return (
-    <Stack sx={{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+    <Stack sx={{ width: '100vw', justifyContent: 'flex-start', alignItems: 'center', mt: 2 }}>
       <div className="Posts">
-        <Stack direction="row" sx={{ width: '50vw', maxWidth: 900, minWidth: 600, justifyContent: 'space-between', mb: 2 }}>
+        <Stack direction="row" mb={2}>
           <SearchAndFilterBar hallFilter={hallFilter} setHallFilter={setHallFilter} mealFilter={mealFilter} setMealFilter={setMealFilter} orderFilter={orderFilter} setOrderFilter={setOrderFilter} />
         </Stack>
         <Typography sx={{ fontWeight: 'bold', fontSize: '28px' }}>{loaded}</Typography>
         <Stack spacing={2} mt={3} sx={{ alignItems: 'center' }}>
-          {filteredPosts.map((posts) => (
-            <div key={posts.id}>
-              <Post post={posts} />
+          {filteredPosts.map((post) => (
+            <div key={post.id}>
+              <Post post={post} />
             </div>
           ))}
         </Stack>
@@ -109,8 +104,5 @@ const Home = () => {
     </Stack>
   )
 }
-
-{/* <FilterMenu categories={categories} setCategories={setCategories}/> 
-<Searchbar/>*/}
 
 export default Home

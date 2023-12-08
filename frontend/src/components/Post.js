@@ -50,7 +50,7 @@ const Post = ({post, in_create = false}) => {
       'Authorization': `Bearer ${authToken}`
     }
    };
-    axios.request(config)
+  axios.request(config)
   }
 
   const addCommentWithKey = (e) => {
@@ -127,7 +127,7 @@ const Post = ({post, in_create = false}) => {
     <Card sx={{ width:'40vw', boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
         <Stack direction="row" sx={{justifyContent: 'space-between', mr: 1}}>
-          <Typography sx={{fontWeight: 'bold', fontSize: '24px'}}>{post.title}</Typography>
+          <Typography sx={{fontWeight: 'bold', fontSize: '24px', wordWrap: 'break-word', maxWidth: '30vw'}}>{post.title}</Typography>
           <Typography sx={{fontWeight: 'bold', fontSize: '18px'}}>{post.timestamp.slice(0, 10)}</Typography>
         </Stack>
         <Stack direction="row" spacing={1} sx={{mt: 1, mb: 1}}>
