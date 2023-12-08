@@ -69,3 +69,8 @@ class MessageSchema(SQLAlchemyAutoSchema):
         model = Message
 
     sender_username = auto_field(dump_only=True)
+    recipient_profile_image_url = fields.Method('get_profile_image_url')
+
+    @staticmethod
+    def get_profile_image_url(obj):
+        return obj.recipient.profile_image_url
