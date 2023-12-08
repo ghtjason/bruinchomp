@@ -50,40 +50,52 @@ const Home = () => {
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [hallFilter, setHallFilter] = useState('');
   const [mealFilter, setMealFilter] = useState('');
+  const [orderFilter, setOrderFilter] = useState('recent');
 
   useEffect(() => {
     const handleFilter = () => {
-      let filteredPosts = posts;
+
+      let newFilteredPosts = posts;
+
       if (hallFilter) {
         if (hallFilter === 'All') {
-          filteredPosts = filteredPosts;
+          newFilteredPosts = newFilteredPosts;
         } else {
           const hallPosts = posts.filter((post) => {
             return (post.hall.toLowerCase() === hallFilter.toLowerCase());
           })
-          filteredPosts = filteredPosts.filter((post) => hallPosts.includes(post));
+          newFilteredPosts = newFilteredPosts.filter((post) => hallPosts.includes(post));
         }
       }
+
       if (mealFilter) {
         if (mealFilter === 'All') {
-          filteredPosts = filteredPosts;
+          newFilteredPosts = newFilteredPosts;
         } else {
           const mealPosts = posts.filter((post) => {
             return (post.meal_period.toLowerCase() === mealFilter.toLowerCase());
           })
-          filteredPosts = filteredPosts.filter((post) => mealPosts.includes(post));
+          newFilteredPosts = newFilteredPosts.filter((post) => mealPosts.includes(post));
         }
       }
-      setFilteredPosts(filteredPosts);
+
+      if (orderFilter === 'recent') {
+        newFilteredPosts.sort((post1, post2) => new Date(post2.timestamp) - new Date(post1.timestamp));
+      } else if (orderFilter === 'popular') {
+        newFilteredPosts.sort((post1, post2) => post2.like_count - post1.like_count);
+      }
+      setFilteredPosts(() => {
+        return [...newFilteredPosts]
+      });
     }
     handleFilter()
-  }, [hallFilter, mealFilter, posts])
+  }, [orderFilter, hallFilter, mealFilter, posts])
 
   return (
     <Stack sx={{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
       <div className="Posts">
         <Stack direction="row" sx={{ width: '50vw', maxWidth: 900, minWidth: 600, justifyContent: 'space-between', mb: 2 }}>
-          <SearchAndFilterBar hallFilter={hallFilter} setHallFilter={setHallFilter} mealFilter={mealFilter} setMealFilter={setMealFilter} />
+          <SearchAndFilterBar hallFilter={hallFilter} setHallFilter={setHallFilter} mealFilter={mealFilter} setMealFilter={setMealFilter} orderFilter={orderFilter} setOrderFilter={setOrderFilter} />
         </Stack>
         <Typography sx={{ fontWeight: 'bold', fontSize: '28px' }}>{loaded}</Typography>
         <Stack spacing={2} mt={3} sx={{ alignItems: 'center' }}>

@@ -4,13 +4,12 @@ import { Form, useNavigate } from 'react-router-dom';
 import { Typography, InputAdornment, TextField, Autocomplete, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 
-const SearchAndFilterBar = ({hallFilter, setHallFilter, mealFilter, setMealFilter}) => {
+const SearchAndFilterBar = ({hallFilter, setHallFilter, mealFilter, setMealFilter, orderFilter, setOrderFilter}) => {
     const diningHallOptions = ['All', 'De Neve', 'Bruin Plate', 'Epicuria'];
     const mealOptions = ['All', 'Breakfast', 'Lunch', 'Dinner'];
-    const orderOptions = ['recent', 'popular', 'relevant'];
+    const orderOptions = ['recent', 'popular'];
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState(false);
-    const [orderFilter, setOrderFilter] = useState('recent');
     const navigate = useNavigate()
 
     const searchParams = [
