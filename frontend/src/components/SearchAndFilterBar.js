@@ -27,17 +27,17 @@ const SearchAndFilterBar = ({categories, setCategories}) => {
         if (e.key === 'Enter') {
             e.preventDefault()
             if (searchTerm) {
-                if (searchTerm.includes('/') || searchTerm.includes('%') || searchTerm.includes('=')) {
+                if (searchTerm.includes('/') || searchTerm.includes('%') || searchTerm.includes('=') || searchTerm === '*') {
                     setError(true)
                     setSearchTerm('')
                 }
                 else {
                     let search = "key=" + searchTerm;
                     setSearchTerm('')
-                    if (hallFilter) {
+                    if (hallFilter && hallFilter !== 'All') {
                         search = search + "&hall=" + hallFilter;
                     }
-                    if (mealFilter) {
+                    if (mealFilter && mealFilter !== 'All') {
                         search = search + "&meal=" + mealFilter;
                     }
                     if (orderFilter) {

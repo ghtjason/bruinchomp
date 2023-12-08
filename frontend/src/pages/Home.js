@@ -49,9 +49,19 @@ const Home = () => {
 
   const [categories, setCategories] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(posts);
+  // const diningHallOptions = ['All', 'De Neve', 'Bruin Plate', 'Epicuria'];
+  // const mealOptions = ['All', 'Breakfast', 'Lunch', 'Dinner'];
+  // const [hallFilter, setHallFilter] = useState('');
+  // const [mealFilter, setMealFilter] = useState('');
 
   useEffect(() => {
     const handleFilter = () => {
+      // if(hallFilter) {
+      //   console.log(hallFilter);
+      // }
+      // if(mealFilter) {
+      //   console.log(mealFilter);
+      // }
       if (categories.length === 0) {
         setFilteredPosts(posts)
       }
@@ -87,7 +97,7 @@ const Home = () => {
     <Stack sx= {{ width: '100vw', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
       <div className="Posts">
         <Stack direction="row" sx={{width: '50vw', maxWidth: 900, minWidth: 600, justifyContent: 'space-between', mb: 2}}>
-          <SearchAndFilterBar categories={categories} setCategories={setCategories}/>
+          <SearchAndFilterBar categories={categories} setCategories={setCategories} />
         </Stack>
         <Typography sx={{fontWeight: 'bold', fontSize: '28px'}}>{loaded}</Typography>
         <Stack spacing={2} mt={3} sx={{alignItems:'center'}}>
