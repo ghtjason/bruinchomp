@@ -9,7 +9,7 @@ const Message = ({message}) => {
   const navigate = useNavigate();
 
   return (
-    <Card sx={{ width:'40vw', boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
+    <Card sx={{ width:'50vw', boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
             <div key={message.id}>
               <Stack direction="row" alignItems={"flex-start"}>
@@ -31,16 +31,16 @@ const Message = ({message}) => {
                     }}
                   />
                 </Button>
-                <Stack direction="row" sx={{justifyContent: 'space-between', mr: 1, width: '35vw'}}>
+                <Stack direction="row" sx={{justifyContent: 'space-between', mr: 1, width: '45vw'}}>
                   <Stack direction="row">
-                    <Typography sx={{mt: 0.7, wordWrap: "break-word", mr: 1}}>
+                    <Typography sx={{ mt: 0.7, wordWrap: "break-word", mr: 1}}>
                       <b>{message.sender_username}</b>
                     </Typography>
-                    <Typography sx={{mt: 0.7, wordWrap: "break-word"}}>
+                    <Typography sx={{ width: '32vw', mt: 0.7, wordWrap: "break-word"}}>
                       {message.content}
                     </Typography>
                   </Stack>
-                  <Typography sx={{fontWeight: 'bold', fontSize: '16px', ml: 2.5}}>{message.timestamp.slice(0, 10)}</Typography>
+                  <Typography sx={{fontWeight: 'bold', fontSize: '16px', ml: 1}}>{message.timestamp.slice(0, 10)}</Typography>
                 </Stack>
 
               </Stack>
