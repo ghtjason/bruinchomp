@@ -6,32 +6,14 @@ import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { proxy_server } from '../utils/constants'
+import Cookies from 'js-cookie';
 
 const Searched = () => {
   const location = useLocation();
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const searchTerm = queryParams.get('key');
-  //   const userTerm = queryParams.get('user');
-    // const hallTerm = queryParams.get('hall');
-    // const mealTerm = queryParams.get('meal');
-    // const orderTerm = queryParams.get('order');
-  //   const matchTerm = queryParams.get('match');
-  //const {searchTerm} = useParams();
+
   const [searchedPosts, setSearchedPosts] = useState([])
-
-  // const [hallFilter, setHallFilter] = useState('');
-  // const [mealFilter, setMealFilter] = useState('');
-  // const [orderFilter, setOrderFilter] = useState('recent');
-
-  // if(hallTerm) {
-  //   setHallFilter(hallTerm);
-  // }
-  // if(mealTerm) {
-  //   setMealFilter(mealTerm);
-  // }
-  // if(orderTerm) {
-  //   setOrderFilter(orderTerm);
-  // }
 
   const hallFilterFromParams = queryParams.get('hall') || 'All';
   const mealFilterFromParams = queryParams.get('meal') || 'All';
@@ -42,6 +24,13 @@ const Searched = () => {
   const [mealFilter, setMealFilter] = useState(mealFilterFromParams);
   const [orderFilter, setOrderFilter] = useState(orderFilterFromParams);
 
+  let authID = ""
+  // fetch posts with authToken if logged in (for likes)
+  const authToken = Cookies.get('authToken');
+  if (authToken) {
+    authID = `Bearer ${authToken}`
+  }
+
   useEffect(() => {
 
     const search = async () => {
@@ -50,6 +39,7 @@ const Searched = () => {
         maxBodyLength: Infinity,
         url: `${proxy_server}/posts/search?${queryParams}`,
         headers: {
+          'Authorization': authID
         }
       };
       await axios.request(config)
