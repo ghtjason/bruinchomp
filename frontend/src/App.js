@@ -7,6 +7,7 @@ import About from "./pages/About";
 import Create from "./pages/CreatePost";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Messages from "./pages/Messages";
 
 import SearchFeed from "./pages/SearchFeed";
 import Searched from "./pages/Searched";
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/messages" element={<Messages />} />
             <Route path="/profile/:user" element={<Profile />} />
             <Route path="/search/:searchTerm" element={<SearchFeed />} />
             <Route path="/posts/search" element={<Searched />} />

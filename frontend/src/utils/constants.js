@@ -33,6 +33,11 @@ export const mainNavbarItems = [
     label: "Profile",
     route: "profile",
   },
+  {
+    id: 5,
+    label: "Messages",
+    route: "messages",
+  },
 ];
 
 // for use in testing with API fetching

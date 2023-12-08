@@ -6,7 +6,7 @@ export const fetchMessages = async (username, authToken) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: `${proxy_server}/messages`,
+    url: `${proxy_server}/messages/received`,
     headers: {
       Authorization: "Bearer " + authToken,
     },

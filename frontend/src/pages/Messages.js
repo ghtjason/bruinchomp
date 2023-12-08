@@ -1,10 +1,4 @@
-import {
-  Button,
-  TextField,
-  Typography,
-  Card,
-  Stack,
-} from "@mui/material";
+import { Button, TextField, Typography, Card, Stack } from "@mui/material";
 
 import axios from "axios";
 import { auth_token } from "../utils/constants";
@@ -12,6 +6,7 @@ import Cookies from "js-cookie"; // cookiessssss
 import { useState } from "react";
 import { fetchMessages } from "../utils/fetchMessages";
 import { fetchUserInfo } from "../utils/fetchUserInfo";
+import { proxy_server } from "../utils/constants";
 
 const Messages = () => {
   const authToken = Cookies.get("authToken");
@@ -119,10 +114,7 @@ const Messages = () => {
             <Stack spacing={2} mt={3} sx={{ alignItems: "center" }}>
               {messages ? (
                 messages.map((message) => {
-                  if (
-                    message.sender_username === user ||
-                    message.recipient_username === user
-                  ) {
+                  if (message.recipient_username === user) {
                     return (
                       <div key={message.id}>
                         <p>{message.content}</p>
