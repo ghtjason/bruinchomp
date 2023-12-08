@@ -124,7 +124,7 @@ const Post = ({post, in_create = false}) => {
   }
 
   return (
-    <Card sx={{ width: '50vw', maxWidth: 900, minWidth: 600, boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
+    <Card sx={{ width:'40vw', boxShadow: 10, border: 1, boxSizing: 'border-box'}}>
       <CardContent>
         <Stack direction="row" sx={{justifyContent: 'space-between', mr: 1}}>
           <Typography sx={{fontWeight: 'bold', fontSize: '24px'}}>{post.title}</Typography>
@@ -138,7 +138,7 @@ const Post = ({post, in_create = false}) => {
       <img
         src={post.image_url}
         alt={"image not shown yet"}
-        style={{width:'50vw', maxWidth: 900, minWidth: 600, maxHeight: 800, minHeight: 300}}
+        style={{width: '40vw', maxHeight: 600, objectFit: 'cover'}}
       />
       <CardContent>
         <Stack direction="row" sx={{alignItems: 'center', mb: 1}}>
