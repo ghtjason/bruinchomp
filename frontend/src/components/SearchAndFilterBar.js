@@ -4,14 +4,12 @@ import { Form, useNavigate } from 'react-router-dom';
 import { Typography, InputAdornment, TextField, Autocomplete, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 
-const SearchAndFilterBar = ({categories, setCategories}) => {
+const SearchAndFilterBar = ({hallFilter, setHallFilter, mealFilter, setMealFilter}) => {
     const diningHallOptions = ['All', 'De Neve', 'Bruin Plate', 'Epicuria'];
     const mealOptions = ['All', 'Breakfast', 'Lunch', 'Dinner'];
     const orderOptions = ['recent', 'popular', 'relevant'];
-    const [searchTerm, setSearchTerm] = useState('')
-    const [error, setError] = useState(false)
-    const [hallFilter, setHallFilter] = useState('');
-    const [mealFilter, setMealFilter] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [error, setError] = useState(false);
     const [orderFilter, setOrderFilter] = useState('recent');
     const navigate = useNavigate()
 
@@ -46,37 +44,8 @@ const SearchAndFilterBar = ({categories, setCategories}) => {
                     navigate(`/posts/search?${search}`);
                     setError(false);
                 }
-            } else {
-                let search = '';
-                if (hallFilter) {
-                    search = search + "&hall=" + hallFilter;
-                }
-                if (mealFilter) {
-                    search = search + "&meal=" + mealFilter;
-                }
-                if (orderFilter) {
-                    search = search + "&order=" + orderFilter;
-                }
-                navigate(`/posts/search?${search}`);
-                setError(false);
             }
         }
-    }
-
-    const handleHallChange = (e) => {
-        setHallFilter(e.target.value);
-        const {
-            target: {value},
-          } = e;
-          setCategories(typeof(value) === 'string' ? value.split(',') : value);
-    }
-
-    const handleMealChange = (e) => {
-        setMealFilter(e.target.value);
-        const {
-            target: {value},
-          } = e;
-          setCategories(typeof(value) === 'string' ? value.split(',') : value);
     }
 
     return (
@@ -89,7 +58,7 @@ const SearchAndFilterBar = ({categories, setCategories}) => {
                         value={hallFilter}
                         label="Dining Jall"
                         onKeyDown={handleSearch}
-                        onChange={handleHallChange}
+                        onChange={(e) => setHallFilter(e.target.value)}
                     >
                         {diningHallOptions.map((option) => (
                             <MenuItem key={option} value={option}>
@@ -107,7 +76,7 @@ const SearchAndFilterBar = ({categories, setCategories}) => {
                         value={mealFilter}
                         label="Meal"
                         onKeyDown={handleSearch}
-                        onChange={handleMealChange}
+                        onChange={(e) => setMealFilter(e.target.value)}
                     >
                         {mealOptions.map((option) => (
                             <MenuItem key={option} value={option}>
