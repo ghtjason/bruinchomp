@@ -30,7 +30,7 @@ const SearchAndFilterBar = ({hallFilter, setHallFilter, mealFilter, setMealFilte
                 }
                 else {
                     let search = "key=" + searchTerm;
-                    setSearchTerm('')
+                    // setSearchTerm('')
                     if (hallFilter && hallFilter !== 'All') {
                         search = search + "&hall=" + hallFilter;
                     }
