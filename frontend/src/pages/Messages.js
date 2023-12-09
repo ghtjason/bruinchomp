@@ -1,9 +1,8 @@
-import { Stack, TextField, CardContent,Typography, Card, Button, InputAdornment, IconButton} from "@mui/material";
+import { Stack, TextField, CardContent,Typography, Card, InputAdornment, IconButton} from "@mui/material";
 
 import Cookies from "js-cookie"; // cookiessssss
 import { useState } from "react";
 import { fetchReceivedMessages, createMessage } from "../utils/messageUtils";
-import { fetchUsernameInfo } from "../utils/fetchUserInfo";
 import Message from '../components/Message'
 import SendIcon from '@mui/icons-material/Send';
 
