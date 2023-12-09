@@ -57,7 +57,7 @@ const Searched = () => {
         });
     };
     search();
-  }, [searchTerm, queryParams])
+  }, [searchTerm, queryParams, authID])
 
   return (
     <Stack sx={{ width: '100vw', mt: 2 }}>
