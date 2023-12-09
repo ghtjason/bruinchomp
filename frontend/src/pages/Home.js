@@ -17,6 +17,7 @@ const Home = () => {
 
   const [posts, setPosts] = useState([]);
   const [loaded, setLoaded] = useState('Loading posts...')
+  const [filteredPosts, setFilteredPosts] = useState(posts);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -42,7 +43,6 @@ const Home = () => {
     fetchPosts();
   }, [authID])
 
-  const [filteredPosts, setFilteredPosts] = useState(posts);
   const [hallFilter, setHallFilter] = useState('All');
   const [mealFilter, setMealFilter] = useState('All');
   const [orderFilter, setOrderFilter] = useState('recent');
@@ -92,7 +92,10 @@ const Home = () => {
         <Stack direction="row" mb={2}>
           <SearchAndFilterBar hallFilter={hallFilter} setHallFilter={setHallFilter} mealFilter={mealFilter} setMealFilter={setMealFilter} orderFilter={orderFilter} setOrderFilter={setOrderFilter} />
         </Stack>
+        
         <Typography sx={{ fontWeight: 'bold', fontSize: '28px' }}>{loaded}</Typography>
+        <Typography sx={{ mt:1, fontSize: '25px'}} align="center">{((filteredPosts.length === 0) && (loaded === '') )? "No posts found :(" : '' }</Typography>
+
         <Stack spacing={2} mt={3} sx={{ alignItems: 'center' }}>
           {filteredPosts.map((post) => (
             <div key={post.id}>

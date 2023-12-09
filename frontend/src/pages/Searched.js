@@ -61,16 +61,18 @@ const Searched = () => {
 
   return (
     <Stack sx={{ width: '100vw', mt: 2 }}>
-      <Stack direction="row" sx={{ justifyContent: 'space-between', mr: 10, ml: 5 }}>
-        <Typography mb={2} variant="h5" fontWeight={"bold"}>
-          Showing search results for <span style={{ color: '#FF0000' }}>{searchTerm ? searchTerm.replace('=', ': ') : ''}</span>
-        </Typography>
+      <Stack direction="column" sx={{ justifyContent: 'space-between', mr: 2, ml: 2, alignItems: 'center' }}>
         <Box>
           <SearchAndFilterBar hallFilter={hallFilter} setHallFilter={setHallFilter} mealFilter={mealFilter} setMealFilter={setMealFilter} orderFilter={orderFilter} setOrderFilter={setOrderFilter} />
         </Box>
+        <Typography mt={1} variant="h5" fontWeight={"bold"} align="center">
+          Showing search results for <span style={{ color: '#FF0000' }}>{searchTerm ? searchTerm.replace('=', ': ') : ''}</span>
+        </Typography>
       </Stack>
 
-      <Stack spacing={2} mt={3} sx={{ alignItems: 'center' }}>
+      <Typography sx={{ mt:1, fontSize: '25px'}} align="center">{searchedPosts.length !== 0 ? '' : "No posts found :("}</Typography>
+
+      <Stack spacing={2} mt={1} sx={{ alignItems: 'center' }}>
         {searchedPosts.map((post) => (
           <div key={post.id}>
             <Post post={post} />
