@@ -7,7 +7,7 @@ export const fetchReceivedMessages = async (authToken) => {
     method: "get",
     url: `${proxy_server}/messages/received`,
     headers: {
-      Authorization: "Bearer " + authToken,
+      "Authorization": "Bearer " + authToken,
     },
   };
   try {
@@ -19,10 +19,11 @@ export const fetchReceivedMessages = async (authToken) => {
   }
 };
 
-export const createMessage = async (authToken, recipient, content) => {
+export const createMessage = async (authToken, recipient, msgContent) => {
+  
   let data = JSON.stringify({
     recipient_username: recipient,
-    content: content,
+    content: msgContent,
   });
 
   let config = {
@@ -30,13 +31,18 @@ export const createMessage = async (authToken, recipient, content) => {
     url: `${proxy_server}/messages`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
+      "Authorization": `Bearer ${authToken}`,
     },
     data: data,
   };
+  console.log("config", config.headers)
 
   try {
+    console.log('creating message')
+
     const response = await axios.request(config)
+    console.log('creating message 2')
+
     console.log(JSON.stringify(response.data))
     return response.data
   } catch (error) {
