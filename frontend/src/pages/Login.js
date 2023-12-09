@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   TextField,
+  Stack
 } from "@mui/material";
 import Cookies from "js-cookie"; // cookiessssss
 import { useNavigate } from "react-router-dom"; // for create account redirection
@@ -102,12 +103,12 @@ const Login = () => {
   if (authToken) {
     console.log("Authentication Token:", authToken);
     return (
-      <>
+      <Stack>
         <Typography variant="body2">You are already logged in!</Typography>
         <Button variant="contained" color="primary" onClick={handleLogout}>
           Logout
         </Button>
-      </>
+      </Stack>
     );
     // if user is not logged in:
   } else {

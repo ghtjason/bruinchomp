@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Create from "./pages/CreatePost";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -21,7 +20,6 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Navigate replace to="/home" />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/about" element={<About />} />
             <Route path="/create" element={<Create />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

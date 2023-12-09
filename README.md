@@ -4,7 +4,7 @@
 Bruinchomp is a social media platform that allows users to post images and reviews of UCLA Dining hall food.
 
 - First run `git clone https://github.com/ghtjason/bruinchomp.git`
-- We have an API running at `https://api-m46o.onrender.com/`, to host your own follow `Backend` steps
+- We have an API running at `https://api-m46o.onrender.com/`. To host your own, follow the steps in `Backend`. Otherwise skip to the `Frontend` section.
 
 ## Backend
 `cd` into `bruinchomp/backend`

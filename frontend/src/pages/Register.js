@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   TextField,
+  Stack,
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie"; // cookiessssss
@@ -93,9 +94,6 @@ const Register = () => {
   const formFieldStyle = {
     marginBottom: "20px",
   };
-  const buttonStyle = {
-    marginRight: "10px",
-  };
   const errorMsgStyle = {
     color: "red",
     fontSize: "80%",
@@ -107,12 +105,12 @@ const Register = () => {
   // if user is logged in:
   if (authToken) {
     return (
-      <>
+      <Stack>
         <Typography variant="body2">You are already logged in!</Typography>
         <Button variant="contained" color="primary" onClick={handleLogout}>
           Logout
         </Button>
-      </>
+      </Stack>
     );
     // if user is not logged in:
   } else {

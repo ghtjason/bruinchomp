@@ -10,33 +10,26 @@ export const mainNavbarItems = [
     label: "Home",
     route: "home",
   },
-
   {
     id: 1,
-    label: "About",
-    route: "about",
+    label: "Profile",
+    route: "profile",
   },
-
   {
     id: 2,
+    label: "Messages",
+    route: "messages",
+  },
+  {
+    id: 3,
     label: "Login",
     route: "login",
   },
 
   {
-    id: 3,
+    id: 4,
     label: "Register",
     route: "register",
-  },
-  {
-    id: 4,
-    label: "Profile",
-    route: "profile",
-  },
-  {
-    id: 5,
-    label: "Messages",
-    route: "messages",
   },
 ];
 
