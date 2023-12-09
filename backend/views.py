@@ -345,6 +345,7 @@ def get_sent_msgs():
     try:
         user = User.query.get(get_jwt_identity())
         messages = user.sent_msgs
+        messages.reverse()
         return messages_schema.dump(messages)
     except Exception as e:
         return f"error: {e}"
@@ -356,6 +357,7 @@ def get_received_msgs():
     try:
         user = User.query.get(get_jwt_identity())
         messages = user.received_msgs
+        messages.reverse()
         return messages_schema.dump(messages)
     except Exception as e:
         return f"error: {e}"
