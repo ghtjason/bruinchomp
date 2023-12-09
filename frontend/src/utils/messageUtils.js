@@ -35,18 +35,11 @@ export const createMessage = async (authToken, recipient, msgContent) => {
     },
     data: data,
   };
-  console.log("config", config.headers)
 
   try {
-    console.log('creating message')
-
     const response = await axios.request(config)
-    console.log('creating message 2')
-
-    console.log(JSON.stringify(response.data))
     return response.data
   } catch (error) {
-    console.log("Error: ", error)
     return false
   }
 

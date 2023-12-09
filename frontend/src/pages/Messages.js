@@ -12,9 +12,8 @@ const Messages = () => {
   const authToken = Cookies.get("authToken");
   const [recipient, setRecipient] = useState("");
   const [msgContent, setMsgContent] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [status, setStatus] = useState("");
   const [messages, setMessages] = useState(null);
-  const [msgSuccess, setMsgSuccess] = useState(false)
 
   const initializeProfile = () => {
     fetchReceivedMessages(authToken).then((result) => {
@@ -27,7 +26,14 @@ const Messages = () => {
   const handleSend = async () => {
     if (recipient) {
       await createMessage(authToken, recipient, msgContent).then(result => {
-          console.log("sent msg")
+        if (result.success) {
+          setStatus("Sent message!")
+          setMsgContent("")
+        }
+        else {
+          if (result.includes('No recipient found')) setStatus(`No recipient ${recipient} found`)
+          else setStatus("Just talk to yourself")
+        }
       })
     }
   };
@@ -79,11 +85,17 @@ const Messages = () => {
                 }}
                 fullWidth
               />
-              {/* <Typography variant="body2" style={errorMsgStyle}>
-                {message}
-              </Typography> */}
+              <Typography 
+              variant="body2"
+              sx={{
+                color: "red",
+                fontSize: "80%",
+                mt: 1,
+              }}
+              >
+                {status}
+              </Typography>
             </form>
-            <Typography ml={1} color={'green'}>{msgSuccess ? 'Success!' : ''} </Typography>
           </CardContent>
         </Card>
         <div className="Messages">
